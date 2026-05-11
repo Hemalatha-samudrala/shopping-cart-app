@@ -1,0 +1,47 @@
+<div class="admin-container">
+
+  <h2>Manage Categories</h2>
+
+  <!-- ADD -->
+  <div class="add-box">
+    <input
+      [(ngModel)]="newCategory"
+      placeholder="New category"
+    />
+    <button (click)="addCategory()">Add</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="category-list">
+
+  <div *ngFor="let cat of categories" class="category-item">
+
+    <!-- VIEW MODE -->
+    <ng-container *ngIf="editId !== cat.Id; else editMode">
+
+      <span>{{ cat.Name }}</span>
+
+      <div class="category-actions">
+        <button class="edit-btn" (click)="startEdit(cat)">Edit</button>
+        <button class="delete-btn" (click)="deleteCategory(cat.Id)">Delete</button>
+      </div>
+
+    </ng-container>
+
+    <!-- EDIT MODE -->
+    <ng-template #editMode>
+
+      <input [(ngModel)]="editName" />
+
+      <div class="category-actions">
+        <button class="save-btn" (click)="saveEdit()">Save</button>
+        <button class="cancel-btn" (click)="editId = null">Cancel</button>
+      </div>
+
+    </ng-template>
+
+  </div>
+
+</div>
+
+</div>

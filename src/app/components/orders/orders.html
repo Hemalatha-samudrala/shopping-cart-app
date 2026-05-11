@@ -1,0 +1,97 @@
+<div class="orders-container">
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+
+    <input type="text"
+         placeholder="Search Order Code"
+         [(ngModel)]="orderCodeFilter"
+         (input)="applyFilters()" />
+         
+    <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+      <option value="">All Status</option>
+      <option>Placed</option>
+      <option>Processing</option>
+      <option>Delivered</option>
+      <option>Cancelled</option>
+    </select>
+
+    <input type="date"
+           [(ngModel)]="dateFilter"
+           (change)="applyFilters()" />
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-card">
+    <h3>
+      {{ orders.length }}
+      {{ orders.length === 1 ? 'Order' : 'Orders' }}
+    </h3>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="orders.length === 0" class="empty-state">
+    <h3>😕 No orders found</h3>
+    <p>Try changing filters</p>
+  </div>
+
+  <!-- ✅ FIX: ADD *ngFor HERE -->
+  <div class="order-card"
+       *ngFor="let order of orders">
+
+    <!-- HEADER -->
+    <div class="order-header"
+         (click)="toggleOrder(order.Id)">
+
+      <div>
+        <h3>{{ order.OrderCode }}</h3>
+        <p *ngIf="isAdmin"> 📧 {{ order.Email }}</p>
+        <p>Total: ${{ order.TotalPrice }}</p>
+      </div>
+
+      <div class="status">
+        <span *ngIf="!isAdmin">{{ order.Status }}</span>
+
+        <select *ngIf="isAdmin"
+                [(ngModel)]="order.Status"
+                (change)="updateStatus(order)">
+          <option>Placed</option>
+          <option>Processing</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+
+      <div class="arrow">
+        {{ expandedOrderId === order.Id ? '▲' : '▼' }}
+      </div>
+
+    </div>
+
+    <!-- ITEMS -->
+    <div class="order-items"
+         *ngIf="expandedOrderId === order.Id">
+
+      <hr />
+
+      <div *ngFor="let item of order.items" class="item-row">
+
+        <img
+          [src]="item.ImageUrl || 'assets/no-image.png'"
+          width="80"
+        />
+        <div class="item-info">
+          <p>{{ item.ProductName }}</p>
+          <small>Qty: {{ item.Quantity }}</small>
+        </div>
+
+        <div class="price">
+          ${{ item.Price }}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

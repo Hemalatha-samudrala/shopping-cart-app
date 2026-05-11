@@ -1,0 +1,53 @@
+<div class="overlay" *ngIf="isPlacingOrder">
+  <div class="spinner-box">
+    <div class="spinner"></div>
+    <p>Placing your order...</p>
+  </div>
+</div>
+<div class="checkout-container">
+
+  <h2>Checkout</h2>
+
+  <!-- 🛒 SHOW ONLY BEFORE ORDER -->
+  <div *ngIf="!orderPlaced">
+
+    <!-- Cart Items -->
+    <div *ngFor="let item of cartService.cartItems()" class="item">
+      <img 
+    [src]="item.ImageUrl|| 'assets/no-image.png'" 
+    width="80"
+  />
+      <p>
+        {{ item.ProductName }} -
+        {{ item.Quantity }} x ${{ item.Price }}
+      </p>
+    </div>
+
+    <hr />
+
+    <!-- Summary -->
+    <h3>Total Items: {{ cartService.totalItems() }}</h3>
+    <h3>Total Price: ${{ cartService.getTotal() }}</h3>
+
+    <!-- Place Order -->
+    <button (click)="placeOrder()">
+      Place Order
+    </button>
+
+  </div>
+
+  <!-- ✅ SHOW ONLY AFTER ORDER -->
+  <div *ngIf="orderPlaced" class="success-box">
+
+    <h2>🎉 Order Placed Successfully</h2>
+
+    <p>Your Order Code:</p>
+    <h3>{{ confirmationCode }}</h3>
+
+    <button (click)="goToProducts()">
+      Continue Shopping
+    </button>
+
+  </div>
+
+</div>

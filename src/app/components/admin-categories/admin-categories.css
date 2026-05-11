@@ -1,0 +1,183 @@
+
+/* PAGE WRAPPER */
+.admin-container {
+  padding: 24px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* TITLE */
+.admin-container h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* ADD CATEGORY BOX */
+.add-box {
+  display: flex;
+  gap: 12px;
+  margin: 0 auto 24px auto;
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.add-box input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.add-box input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+.add-box button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.add-box button:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+/* CATEGORY GRID */
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* wider cards */
+  gap: 20px;
+}
+
+/* CATEGORY CARD */
+.category-item {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.category-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+/* CATEGORY NAME */
+.category-item span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  flex: 1;
+}
+
+/* EDIT INPUT */
+.category-item input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+/* ACTION BUTTON GROUP (RIGHT SIDE) */
+.category-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* BUTTON BASE STYLE */
+.category-actions button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* EDIT */
+.edit-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #1d4ed8;
+}
+
+/* DELETE */
+.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* SAVE */
+.save-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #15803d;
+}
+
+/* CANCEL (optional reuse delete style) */
+.cancel-btn {
+  background: #6b7280;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #4b5563;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .add-box {
+    flex-direction: column;
+  }
+
+  .category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-item {
+     display: flex;
+  align-items: center;
+  justify-content: space-between;
+  }
+
+  .category-actions {
+    margin-left: auto;   /* 🔥 pushes buttons right */
+  display: flex;
+  gap: 8px;
+  }
+}

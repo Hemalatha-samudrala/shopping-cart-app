@@ -1,0 +1,40 @@
+<div class="top-bar">
+
+  <!-- CATEGORY TABS -->
+  <div class="category-tabs">
+    <button (click)="selectCategory(null)">All</button>
+
+      <button *ngFor="let c of categories"
+        (click)="selectCategory(c)">
+                  {{ c.Name }}
+          </button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+    />
+  </div>
+
+</div>
+<div class="products-container">
+  <div class="product-card" *ngFor="let product of products">
+    <img [src]="product.ImageUrl || 'assets/no-image.png'" 
+         [alt]="product.ProductName"
+         width="150" />
+
+    <h3>{{ product.ProductName }}</h3>
+    <p>${{ product.Price }}</p>
+    
+
+    <button (click)="addToCart(product)">Add to Cart</button>
+  </div>
+</div>
+<div *ngIf="products.length === 0">
+  No products found
+</div>

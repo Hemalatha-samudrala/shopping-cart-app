@@ -1,0 +1,110 @@
+/* Container */
+.checkout-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: Arial, sans-serif;
+}
+
+/* Heading */
+.checkout-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Cart Items */
+.checkout-container div[p] {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Divider */
+.checkout-container hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Summary */
+.checkout-container h3 {
+  margin: 10px 0;
+  color: #444;
+}
+
+/* Button */
+.checkout-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.checkout-container button:hover {
+  background: #0056b3;
+}
+
+/* Success Box */
+.success-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #e6f9ec;
+  border: 1px solid #b2f2c8;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.success-box h2 {
+  color: #2e7d32;
+}
+
+.success-box h3 {
+  color: #1b5e20;
+  margin: 10px 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .checkout-container {
+    margin: 20px;
+    padding: 15px;
+  }
+}
+.order-card, .cart-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.item, .cart-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+img {
+  object-fit: cover;
+  border-radius: 6px;
+}
+/* FULL SCREEN OVERLAY */
+.overlay {
+  position: fixed;
+  inset:0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+

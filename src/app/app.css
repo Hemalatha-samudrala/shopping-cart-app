@@ -1,0 +1,42 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007bff;
+  padding: 15px 30px;
+  color: white;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav-links a.active {
+  border-bottom: 2px solid white;
+}
+
+.nav-links button {
+  background: #dc3545;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-links button:hover {
+  background: #b02a37;
+}
