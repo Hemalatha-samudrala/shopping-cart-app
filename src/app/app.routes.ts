@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdminGuard } from './guards/admin-guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     {
@@ -15,7 +15,8 @@ export const routes: Routes = [
   {
     path: 'admin-products',
     loadComponent: () =>
-      import('./components/admin-products/admin-products').then(m => m.AdminProductsComponent)
+      import('./components/admin-products/admin-products').then(m => m.AdminProductsComponent),
+    canActivate: [adminGuard]
     },
   {
   path: 'cart',
@@ -35,7 +36,8 @@ export const routes: Routes = [
   {
   path: 'admin-categories',
   loadComponent: () => import('./components/admin-categories/admin-categories')
-    .then(m => m.AdminCategoriesComponent)
+    .then(m => m.AdminCategoriesComponent),
+  canActivate: [adminGuard]
 },
   {
     path: '**',
