@@ -46,7 +46,7 @@ export class LoginComponent {
         console.log('Login success:', res);
         console.log('Role:', res.user.role);
         // Save session
-        this.auth.login(res.user.id,res.user.email, res.user.role);
+        this.auth.login(res.user.id,res.user.email, res.user.role,res.token);
 
         // Load cart for user
         this.cartService.loadCart(res.user.id);

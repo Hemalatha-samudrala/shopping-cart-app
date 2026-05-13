@@ -11,25 +11,40 @@ export class AuthService {
   currentRole = signal<string | null>(null);
 
   // ---------- LOGIN ----------
-  login(id: number,email: string, role: string) {
-    this.currentUserId.set(id);
-    this.currentUser.set(email);
-    this.currentRole.set(role);
+  login(
+  id: number,
+  email: string,
+  role: string,
+  token: string
+) {
 
-    localStorage.setItem('userId', id.toString());
-    localStorage.setItem('user', email);
-    localStorage.setItem('role', role);
-  }
+  this.currentUserId.set(id);
+  this.currentUser.set(email);
+  this.currentRole.set(role);
+
+  localStorage.setItem('userId', id.toString());
+
+  localStorage.setItem('user', email);
+
+  localStorage.setItem('role', role);
+
+  localStorage.setItem('token', token);
+}
 
   // ---------- LOGOUT ----------
   logout() {
+
   this.currentUser.set(null);
   this.currentRole.set(null);
 
   localStorage.removeItem('user');
+
   localStorage.removeItem('role');
 
-  }
+  localStorage.removeItem('userId');
+
+  localStorage.removeItem('token');
+}
 
   // ---------- LOAD USER ON APP START ----------
   loadUser(): string | null {

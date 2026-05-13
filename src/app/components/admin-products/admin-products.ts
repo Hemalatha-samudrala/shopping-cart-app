@@ -65,7 +65,7 @@ export class AdminProductsComponent implements OnInit {
 
     formData.append('productName', this.product.productName);
     formData.append('price', String(this.product.price ?? 0));
-    formData.append('CategoryId', String(this.product.CategoryId ?? ''));
+    formData.append('categoryId', String(this.product.CategoryId ?? ''));
 
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
@@ -77,7 +77,11 @@ export class AdminProductsComponent implements OnInit {
         this.resetForm();
         this.loadProducts();
       },
-      error: (err) => alert(err.error?.message || 'Add failed')
+      error: (err) => {
+  console.log('BACKEND RESPONSE:', err.error);
+
+  alert(err.error?.message || 'Add failed');
+}
     });
   }
 

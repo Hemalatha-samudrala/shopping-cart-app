@@ -7,7 +7,7 @@ export const adminGuard: CanActivateFn = () => {
 
   const role = localStorage.getItem('role');
 
-  if (role === 'admin') {
+  if (role === 'Admin') {
     return true;
   }
 
