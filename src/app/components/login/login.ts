@@ -38,7 +38,7 @@ export class LoginComponent {
       return;
     }
 
-    this.http.post<any>(`${environment.apiUrl}/auth/login`, {
+    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, {
       email: this.email,
       password: this.password
     }).subscribe({
@@ -71,7 +71,7 @@ export class LoginComponent {
       return;
     }
 
-    this.http.post<any>(`${environment.apiUrl}/auth/register`, {
+    this.http.post<any>(`${environment.apiUrl}/api/auth/register`, {
       email: this.email,
       password: this.password
     }).subscribe({

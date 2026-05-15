@@ -1,38 +1,68 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpParams } from '@angular/common/http';
 
-@Injectable({ providedIn: 'root' })
+import { ApiResponse } from '../models/api-response';
+import { Product } from '../models/product';
+import { Category } from '../models/category';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  addProduct(product: any) {
-    return this.http.post(`${environment.apiUrl}/products`, product);
+  // =====================
+  // ADD PRODUCT
+  // =====================
+  addProduct(product: FormData) {
+    return this.http.post<ApiResponse<null>>(
+      `${environment.apiUrl}/api/products`,
+      product
+    );
   }
 
+  // =====================
+  // GET PRODUCTS (with filters)
+  // =====================
+  getProducts(categoryId: number | null, search: string) {
 
-getProducts(categoryId: number | null, search: string) {
-  let url = `${environment.apiUrl}/products?search=${search}`;
+    let url =
+      `${environment.apiUrl}/api/products?search=${search}`;
 
-  if (categoryId !== null) {
-    url += `&categoryId=${categoryId}`;
+    if (categoryId !== null) {
+      url += `&categoryId=${categoryId}`;
+    }
+
+    return this.http.get<ApiResponse<Product[]>>(url);
   }
 
-  return this.http.get<any[]>(url);
-}
-
-   getCategories() {
-    return this.http.get<any[]>(`${environment.apiUrl}/categories`);
+  // =====================
+  // GET CATEGORIES
+  // =====================
+  getCategories() {
+    return this.http.get<ApiResponse<Category[]>>(
+      `${environment.apiUrl}/api/categories`
+    );
   }
 
+  // =====================
+  // UPDATE PRODUCT
+  // =====================
   updateProduct(id: number, data: FormData) {
-  return this.http.put(`${environment.apiUrl}/products/${id}`, data);
-}
+    return this.http.put<ApiResponse<null>>(
+      `${environment.apiUrl}/api/products/${id}`,
+      data
+    );
+  }
 
-deleteProduct(id: number) {
-  return this.http.delete(`${environment.apiUrl}/products/${id}`);
-}
+  // =====================
+  // DELETE PRODUCT
+  // =====================
+  deleteProduct(id: number) {
+    return this.http.delete<ApiResponse<null>>(
+      `${environment.apiUrl}/api/products/${id}`
+    );
+  }
 }

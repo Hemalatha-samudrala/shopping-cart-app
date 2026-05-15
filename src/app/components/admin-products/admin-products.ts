@@ -7,6 +7,7 @@ import { CategoryService } from '../../services/category';
 import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
 
+
 @Component({
   selector: 'app-admin-products',
   standalone: true,
@@ -15,7 +16,7 @@ import { AuthService } from '../../services/auth';
   styleUrl: './admin-products.css'
 })
 export class AdminProductsComponent implements OnInit {
-
+  env = environment;
   products: any[] = [];
   categories: any[] = [];
 
@@ -49,7 +50,8 @@ export class AdminProductsComponent implements OnInit {
     this.productService
       .getProducts(this.selectedCategory, this.searchText)
       .subscribe(res => {
-        this.products = res;
+        this.products = res.data;
+        console.log(res);
       });
   }
 
@@ -145,7 +147,7 @@ export class AdminProductsComponent implements OnInit {
 
   loadCategories() {
   this.categoryService.getAll().subscribe((res: any) => {
-    this.categories = res;
+    this.categories = res.data;
   });
 }
 

@@ -13,7 +13,7 @@ export class CartService {
 
   // LOAD CART
   loadCart(userId: number) {
-    this.http.get<any[]>(`${environment.apiUrl}/cart/${userId}`)
+    this.http.get<any[]>(`${environment.apiUrl}/api/cart/${userId}`)
       .subscribe({
         next: (res) => {
           this.cartItems.set(res);
@@ -26,7 +26,7 @@ export class CartService {
 
   // ADD TO CART
   addToCart(userId: number, productId: number) {
-    this.http.post(`${environment.apiUrl}/cart`, {
+    this.http.post(`${environment.apiUrl}/api/cart`, {
       userId,
       productId
     }).subscribe({
@@ -41,7 +41,7 @@ export class CartService {
 
   // REMOVE ITEM
   removeFromCart(userId: number, productId: number) {
-    this.http.delete(`${environment.apiUrl}/cart/${userId}/${productId}`)
+    this.http.delete(`${environment.apiUrl}/api/cart/${userId}/${productId}`)
       .subscribe({
         next: () => {
           this.loadCart(userId);
@@ -54,7 +54,7 @@ export class CartService {
 //DECREASE QUANTITY
   decreaseQuantity(userId: number, productId: number) {
   this.http.put(
-    `${environment.apiUrl}/cart/${userId}/${productId}`,
+    `${environment.apiUrl}/api/cart/${userId}/${productId}`,
     {}
   ).subscribe(() => {
     this.loadCart(userId);
@@ -63,7 +63,7 @@ export class CartService {
 
   // CLEAR CART
   clearCart(userId: number) {
-    this.http.delete(`${environment.apiUrl}/cart/${userId}`)
+    this.http.delete(`${environment.apiUrl}/api/cart/${userId}`)
       .subscribe({
         next: () => {
           this.cartItems.set([]);

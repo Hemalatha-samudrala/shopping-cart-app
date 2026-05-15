@@ -44,7 +44,7 @@ export class CheckoutComponent {
     return;
   }
 
-  this.http.post(`${environment.apiUrl}/orders`, {
+  this.http.post(`${environment.apiUrl}/api/orders`, {
     userId,
     items,
     totalPrice: this.cartService.getTotal()

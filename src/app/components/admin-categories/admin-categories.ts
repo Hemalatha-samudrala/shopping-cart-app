@@ -26,17 +26,23 @@ export class AdminCategoriesComponent implements OnInit {
 
   load() {
     this.categoryService.getAll().subscribe(res => {
-      this.categories = res;
+      this.categories = res.data;
+      console.log(res);
     });
   }
 
   // ADD
   addCategory() {
     if (!this.newCategory.trim()) return;
-
-    this.categoryService.add(this.newCategory).subscribe(() => {
+    this.categoryService.add(this.newCategory).subscribe({
+      next: () => { 
+        alert('Category added');
       this.newCategory = '';
       this.load();
+      },
+      error: (err) => {
+      alert(err.error?.message || 'Add failed');
+      }
     });
   }
 

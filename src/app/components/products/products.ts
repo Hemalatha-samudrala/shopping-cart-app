@@ -4,6 +4,7 @@ import { CartService } from '../../services/cart';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-products',
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './products.css',
 })
 export class ProductsComponent implements OnInit {
+  env = environment;
   products: any[] = [];
   searchText: string = '';
   selectedCategory: number | null = null;
@@ -32,13 +34,13 @@ categories: any[] = [];
     this.productService
       .getProducts(this.selectedCategory, this.searchText)
       .subscribe(res => {
-        this.products = res;
+        this.products = res.data;
       });
   }
      // 🔥 Load categories from DB
   loadCategories() {
     this.productService.getCategories().subscribe(res => {
-      this.categories = res;
+      this.categories = res.data;
     });
   }
 

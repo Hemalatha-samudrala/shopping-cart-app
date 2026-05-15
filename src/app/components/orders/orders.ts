@@ -44,7 +44,7 @@ orderCodeFilter: string = '';
 }
 
   loadOrders() {
-      let url = `${environment.apiUrl}/orders/${this.userId}?`;
+      let url = `${environment.apiUrl}/api/orders/${this.userId}?`;
 
   if (this.statusFilter) url += `status=${this.statusFilter}&`;
   if (this.dateFilter) url += `date=${this.dateFilter}`;
@@ -52,7 +52,7 @@ orderCodeFilter: string = '';
   this.http.get<any[]>(url).subscribe(res => {this.orders = res;console.log(this.orders);});
   }
   updateStatus(order: any) {
-  this.http.put(`${environment.apiUrl}/orders/${order.Id}/status`, {
+  this.http.put(`${environment.apiUrl}/api/orders/${order.Id}/status`, {
     status: order.Status
   }).subscribe({
     next: () => {
@@ -66,7 +66,7 @@ orderCodeFilter: string = '';
 }
 
 loadAllOrders() {
-  let url = `${environment.apiUrl}/orders?`;
+  let url = `${environment.apiUrl}/api/orders?`;
   
   if (this.orderCodeFilter) {
     url += `orderCode=${this.orderCodeFilter}&`;
@@ -78,7 +78,7 @@ loadAllOrders() {
 }
 
 loadStats() {
-  let url = `${environment.apiUrl}/orders/stats?`;
+  let url = `${environment.apiUrl}/api/orders/stats?`;
 
   if (this.statusFilter) {
     url += `status=${this.statusFilter}&`;
