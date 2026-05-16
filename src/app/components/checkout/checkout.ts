@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { CartService } from '../../services/cart';
+
 import { AuthService } from '../../services/auth';
+
+import { OrderService } from '../../services/order';
+
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -16,53 +21,82 @@ import { environment } from '../../../environments/environment';
 })
 export class CheckoutComponent {
 
-  confirmationCode: string = '';
-  orderPlaced: boolean = false;
+  confirmationCode = '';
 
-  // ✅ prevents double click / duplicate orders
-  isPlacingOrder: boolean = false;
+  orderPlaced = false;
+
+  isPlacingOrder = false;
+
+  env = environment;
 
   constructor(
     public cartService: CartService,
     private auth: AuthService,
-    private http: HttpClient,
+    private orderService: OrderService,
     private router: Router
   ) {}
 
   placeOrder() {
 
-  if (this.isPlacingOrder) return;
+    if (this.isPlacingOrder) return;
 
-  this.isPlacingOrder = true;
+    const userId =
+      this.auth.getUserId();
 
-  const userId = this.auth.getUserId();
-  const items = this.cartService.cartItems();
+    const items =
+      this.cartService.cartItems();
 
-  if (!userId || items.length === 0) {
-    alert('Invalid order');
-    this.isPlacingOrder = false;
-    return;
+    if (!userId || !items.length) {
+
+      alert('Cart is empty');
+
+      return;
+    }
+
+    this.isPlacingOrder = true;
+
+    const orderItems = items.map(item => ({
+
+      productId: item.productId,
+
+      quantity: item.quantity
+    }));
+
+    this.orderService.placeOrder({
+      userId,
+      items: orderItems
+    })
+    .subscribe({
+
+      next: (res) => {
+
+        this.confirmationCode =
+          res.data.orderCode;
+
+        this.orderPlaced = true;
+
+        // clear local cart state
+        this.cartService.cartItems.set([]);
+
+        this.isPlacingOrder = false;
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert(
+          err.error?.message ||
+          'Order failed'
+        );
+
+        this.isPlacingOrder = false;
+      }
+    });
   }
 
-  this.http.post(`${environment.apiUrl}/api/orders`, {
-    userId,
-    items,
-    totalPrice: this.cartService.getTotal()
-  }).subscribe({
-    next: (res: any) => {
-      this.confirmationCode = res.orderCode;
-      this.orderPlaced = true;
-      this.cartService.clearCart(userId);
-      this.isPlacingOrder = false;
-    },
-    error: () => {
-      alert('Order failed');
-      this.isPlacingOrder = false;
-    }
-  });
-}
-
   goToProducts() {
+
     this.router.navigate(['/products']);
   }
 }

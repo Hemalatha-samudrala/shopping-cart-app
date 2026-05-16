@@ -10,21 +10,21 @@
   <!-- Cart Items -->
   <div class="cart-item" *ngFor="let item of cartService.cartItems()">
 
-    <img [src]="item.ImageUrl"
-         alt="{{ item.ProductName }}"
+    <img [src]="env.apiUrl + '/uploads/' + item.imageUrl"
+         alt="{{ item.product?.productName }}"
          width="100" />
 
     <div class="item-details">
-      <h3>{{ item.ProductName }}</h3>
-      <p>Price: ${{ item.Price }}</p>
+      <h3>{{ item.productName }}</h3>
+      <p>Price: ${{ item.price }}</p>
       
       <div class="qty-controls">
-        <button (click)="removeOne(item.ProductId)">-</button>
-        <span>{{ item.Quantity }}</span>
-        <button (click)="addOne(item.ProductId)">+</button>
+        <button (click)="removeOne(item.productId)">-</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="addOne(item.productId)">+</button>
       </div>
 
-      <button class="remove" (click)="removeItem(item.ProductId)">
+      <button class="remove" (click)="removeItem(item.productId)">
         Remove
       </button>
     </div>

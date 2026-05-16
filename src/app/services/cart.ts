@@ -1,91 +1,115 @@
 import { Injectable, signal } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
+
 import { environment } from '../../environments/environment';
+
+import { ApiResponse } from '../models/api-response';
+
+import { CartItem } from '../models/cart-item';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  cartItems = signal<any[]>([]);
+  // =====================
+  // STATE
+  // =====================
+  cartItems = signal<CartItem[]>([]);
+
+  private apiUrl =
+    `${environment.apiUrl}/api/cart`;
 
   constructor(private http: HttpClient) {}
 
+  // =====================
   // LOAD CART
+  // =====================
   loadCart(userId: number) {
-    this.http.get<any[]>(`${environment.apiUrl}/api/cart/${userId}`)
-      .subscribe({
-        next: (res) => {
-          this.cartItems.set(res);
-        },
-        error: (err) => {
-          console.error('Failed to load cart', err);
-        }
-      });
+
+    return this.http.get<ApiResponse<CartItem[]>>(
+      `${this.apiUrl}/${userId}`
+    );
   }
 
+  // =====================
   // ADD TO CART
-  addToCart(userId: number, productId: number) {
-    this.http.post(`${environment.apiUrl}/api/cart`, {
-      userId,
-      productId
-    }).subscribe({
-      next: () => {
-        this.loadCart(userId);
-      },
-      error: (err) => {
-        console.error('Add to cart failed', err);
+  // =====================
+  addToCart(
+    userId: number,
+    productId: number
+  ) {
+
+    return this.http.post<ApiResponse<null>>(
+      this.apiUrl,
+      {
+        userId,
+        productId
       }
-    });
+    );
   }
 
-  // REMOVE ITEM
-  removeFromCart(userId: number, productId: number) {
-    this.http.delete(`${environment.apiUrl}/api/cart/${userId}/${productId}`)
-      .subscribe({
-        next: () => {
-          this.loadCart(userId);
-        },
-        error: (err) => {
-          console.error('Remove failed', err);
-        }
-      });
-  }
-//DECREASE QUANTITY
-  decreaseQuantity(userId: number, productId: number) {
-  this.http.put(
-    `${environment.apiUrl}/api/cart/${userId}/${productId}`,
-    {}
-  ).subscribe(() => {
-    this.loadCart(userId);
-  });
-}
+  // =====================
+  // REMOVE FROM CART
+  // =====================
+  removeFromCart(
+    userId: number,
+    productId: number
+  ) {
 
+    return this.http.delete<ApiResponse<null>>(
+      `${this.apiUrl}/${userId}/${productId}`
+    );
+  }
+
+  // =====================
+  // DECREASE QUANTITY
+  // =====================
+  decreaseQuantity(
+    userId: number,
+    productId: number
+  ) {
+
+    return this.http.put<ApiResponse<null>>(
+      `${this.apiUrl}/${userId}/${productId}`,
+      {}
+    );
+  }
+
+  // =====================
   // CLEAR CART
+  // =====================
   clearCart(userId: number) {
-    this.http.delete(`${environment.apiUrl}/api/cart/${userId}`)
-      .subscribe({
-        next: () => {
-          this.cartItems.set([]);
-        },
-        error: (err) => {
-          console.error('Clear cart failed', err);
-        }
-      });
+
+    return this.http.delete<ApiResponse<null>>(
+      `${this.apiUrl}/${userId}`
+    );
   }
 
+  // =====================
   // TOTAL ITEMS
-  totalItems() {
+  // =====================
+  totalItems(): number {
+
     return this.cartItems().reduce(
-      (sum, item) => sum + item.Quantity,
+
+      (sum, item) =>
+
+        sum + item.quantity,
+
       0
     );
   }
 
+  // =====================
   // TOTAL PRICE
-  getTotal() {
+  // =====================
+  getTotal(): number {
+
     return this.cartItems().reduce(
-      (sum, item) => sum + (item.Price * item.Quantity),
+      (sum, item) =>
+        sum + (item.price * item.quantity),
       0
     );
   }

@@ -1,110 +1,153 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-
 import { AuthService } from '../../services/auth';
+import { OrderService } from '../../services/order';
+import { Order } from '../../models/order';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './orders.html',
   styleUrl: './orders.css'
 })
 export class OrdersComponent implements OnInit {
 
-  orders: any[] = [];
+  // =====================
+  // STATE
+  // =====================
+  env=environment;
+  orders: Order[] = [];
+  stats: any[] = [];
   userId!: number;
-  statusFilter: string = '';
-dateFilter: string = '';
-stats: any[] = [];
-isAdmin = false;
-expandedOrderId: number | null = null;
-orderCodeFilter: string = '';
+  isAdmin = false;
+  expandedOrderId: number | null = null;
+
+  // =====================
+  // FILTERS
+  // =====================
+  statusFilter = '';
+  dateFilter = '';
+  orderCodeFilter = '';
 
   constructor(
-    private http: HttpClient,
-    private auth: AuthService
+    private auth: AuthService,
+    private orderService: OrderService
   ) {}
 
+  // =====================
+  // INIT
+  // =====================
   ngOnInit(): void {
-  const id = this.auth.getUserId();
 
-  if (!id) {
-    alert('Please login');
-    return;
-  }
+    const id = this.auth.getUserId();
 
-  this.userId = id;
-  this.isAdmin = this.auth.isAdmin();
-
-  this.applyFilters();
-}
-
-  loadOrders() {
-      let url = `${environment.apiUrl}/api/orders/${this.userId}?`;
-
-  if (this.statusFilter) url += `status=${this.statusFilter}&`;
-  if (this.dateFilter) url += `date=${this.dateFilter}`;
-
-  this.http.get<any[]>(url).subscribe(res => {this.orders = res;console.log(this.orders);});
-  }
-  updateStatus(order: any) {
-  this.http.put(`${environment.apiUrl}/api/orders/${order.Id}/status`, {
-    status: order.Status
-  }).subscribe({
-    next: () => {
-      console.log('Status updated');
-    },
-    error: (err) => {
-      console.error(err);
-      alert('Failed to update status');
+    if (!id) {
+      alert('Please login');
+      return;
     }
-  });
-}
 
-loadAllOrders() {
-  let url = `${environment.apiUrl}/api/orders?`;
-  
-  if (this.orderCodeFilter) {
-    url += `orderCode=${this.orderCodeFilter}&`;
-  }
-  if (this.statusFilter) url += `status=${this.statusFilter}&`;
-  if (this.dateFilter) url += `date=${this.dateFilter}`;
-
-  this.http.get<any[]>(url).subscribe(res => this.orders = res);
-}
-
-loadStats() {
-  let url = `${environment.apiUrl}/api/orders/stats?`;
-
-  if (this.statusFilter) {
-    url += `status=${this.statusFilter}&`;
+    this.userId = id;
+    this.isAdmin = this.auth.isAdmin();
+    this.applyFilters();
   }
 
-  if (this.dateFilter) {
-    url += `date=${this.dateFilter}`;
+  // =====================
+  // LOAD USER ORDERS
+  // =====================
+  loadOrders() {
+
+   this.orderService.getOrdersById(
+  this.userId,
+  this.statusFilter,
+  this.dateFilter,
+  this.orderCodeFilter
+)
+.subscribe({
+  next: (res) => {
+    this.orders = res.data;
+  }
+});
   }
 
-  this.http.get<any[]>(url).subscribe({
-    next: (res) => this.stats = res,
-    error: (err) => console.error(err)
-  });
-}
+  // =====================
+  // UPDATE ORDER STATUS
+  // =====================
+  updateStatus(order: Order) {
 
-applyFilters() {
-  if (this.isAdmin) {
-    this.loadAllOrders();
-    this.loadStats();     //  admin
-  } else {
-    this.loadOrders();
+    this.orderService
+      .updateOrderStatus(
+        order.id,
+        order.status
+      )
+      .subscribe({
+
+        next: () => {
+
+          console.log('Status updated');
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+          alert('Failed to update status');
+        }
+      });
   }
-}
-toggleOrder(orderId: number) {
-  this.expandedOrderId =
-    this.expandedOrderId === orderId ? null : orderId;
-}
 
+  // =====================
+  // ADMIN LOAD ORDERS
+  // =====================
+  loadAllOrders() {
+    this.orderService.getOrders(
+  this.statusFilter,
+  this.dateFilter,
+  this.orderCodeFilter
+)
+.subscribe({
+  next: (res) => {
+    this.orders = res.data;
+  }
+});
+  }
+
+  // =====================
+  // LOAD STATS
+  // =====================
+  loadStats() {
+
+    // future stats service
+    console.log('Load stats');
+  }
+
+  // =====================
+  // APPLY FILTERS
+  // =====================
+  applyFilters() {
+
+    if (this.isAdmin) {
+
+      this.loadAllOrders();
+
+      this.loadStats();
+
+    } else {
+
+      this.loadOrders();
+    }
+  }
+
+  // =====================
+  // TOGGLE EXPAND
+  // =====================
+  toggleOrder(orderId: number) {
+
+    this.expandedOrderId =
+      this.expandedOrderId === orderId
+        ? null
+        : orderId;
+  }
 }

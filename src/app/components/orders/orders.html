@@ -41,19 +41,19 @@
 
     <!-- HEADER -->
     <div class="order-header"
-         (click)="toggleOrder(order.Id)">
+         (click)="toggleOrder(order.id)">
 
       <div>
-        <h3>{{ order.OrderCode }}</h3>
-        <p *ngIf="isAdmin"> 📧 {{ order.Email }}</p>
-        <p>Total: ${{ order.TotalPrice }}</p>
+        <h3>{{ order.orderCode }}</h3>
+        <p *ngIf="isAdmin"> 📧 {{ order.email }}</p>
+        <p>Total: ${{ order.totalPrice }}</p>
       </div>
 
       <div class="status">
-        <span *ngIf="!isAdmin">{{ order.Status }}</span>
+        <span *ngIf="!isAdmin">{{ order.status }}</span>
 
         <select *ngIf="isAdmin"
-                [(ngModel)]="order.Status"
+                [(ngModel)]="order.status"
                 (change)="updateStatus(order)">
           <option>Placed</option>
           <option>Processing</option>
@@ -63,30 +63,29 @@
       </div>
 
       <div class="arrow">
-        {{ expandedOrderId === order.Id ? '▲' : '▼' }}
+        {{ expandedOrderId === order.id ? '▲' : '▼' }}
       </div>
 
     </div>
 
     <!-- ITEMS -->
     <div class="order-items"
-         *ngIf="expandedOrderId === order.Id">
+         *ngIf="expandedOrderId === order.id">
 
       <hr />
 
       <div *ngFor="let item of order.items" class="item-row">
 
-        <img
-          [src]="item.ImageUrl || 'assets/no-image.png'"
+        <img [src]="env.apiUrl + '/uploads/' + item.imageUrl"
           width="80"
         />
         <div class="item-info">
-          <p>{{ item.ProductName }}</p>
-          <small>Qty: {{ item.Quantity }}</small>
+          <p>{{ item.productName }}</p>
+          <small>Qty: {{ item.quantity }}</small>
         </div>
 
         <div class="price">
-          ${{ item.Price }}
+          ${{ item.price }}
         </div>
 
       </div>

@@ -13,13 +13,12 @@
 
     <!-- Cart Items -->
     <div *ngFor="let item of cartService.cartItems()" class="item">
-      <img 
-    [src]="item.ImageUrl|| 'assets/no-image.png'" 
+      <img [src]="env.apiUrl + '/uploads/' + item.imageUrl" 
     width="80"
   />
       <p>
-        {{ item.ProductName }} -
-        {{ item.Quantity }} x ${{ item.Price }}
+        {{ item.productName }} -
+        {{ item.quantity }} x ${{ item.price }}
       </p>
     </div>
 

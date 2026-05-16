@@ -1,54 +1,198 @@
 import { Component, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { CartService } from '../../services/cart';
+
 import { RouterModule } from '@angular/router';
+
+import { CartService } from '../../services/cart';
+
 import { AuthService } from '../../services/auth';
 
+import { CartItem } from '../../models/cart-item';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './cart.html',
   styleUrl: './cart.css'
 })
 export class CartComponent implements OnInit {
-  userId: number=0;
+
+  userId = 0;
+  env=environment;
+
   constructor(
-  public cartService: CartService,
-  private auth: AuthService
-) {}
+    public cartService: CartService,
+    private auth: AuthService
+  ) {}
 
+  // =====================
+  // INIT
+  // =====================
   ngOnInit(): void {
+
     const id = this.auth.getUserId();
-    console.log('UserId:', id)
-  if (!id) {
-    console.error('User not logged in');
-    return;
+
+    if (!id) {
+
+      console.error('User not logged in');
+
+      return;
+    }
+
+    this.userId = id;
+
+    this.loadCart();
   }
 
-  this.userId = id;
+  // =====================
+  // LOAD CART
+  // =====================
+  loadCart(): void {
 
-  this.cartService.loadCart(this.userId);
+    this.cartService
+      .loadCart(this.userId)
+      .subscribe({
+
+        next: (res) => {
+
+          this.cartService.cartItems
+            .set(res.data);
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Failed to load cart',
+            err
+          );
+        }
+      });
   }
 
-  removeItem(productId: number) {
-    this.cartService.removeFromCart(this.userId, productId);
+  // =====================
+  // REMOVE ITEM
+  // =====================
+  removeItem(productId: number): void {
+
+    this.cartService
+      .removeFromCart(
+        this.userId,
+        productId
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.loadCart();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Remove failed',
+            err
+          );
+        }
+      });
   }
 
-addOne(productId: number) {
-  this.cartService.addToCart(this.userId, productId);
-}
+  // =====================
+  // ADD QUANTITY
+  // =====================
+  addOne(productId: number): void {
 
-removeOne(productId: number) {
-  this.cartService.decreaseQuantity(this.userId, productId);
-}
+    this.cartService
+      .addToCart(
+        this.userId,
+        productId
+      )
+      .subscribe({
 
-  clearCart() {
-    this.cartService.clearCart(this.userId);
+        next: () => {
+
+          this.loadCart();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Add failed',
+            err
+          );
+        }
+      });
   }
 
-  getTotal() {
+  // =====================
+  // REMOVE QUANTITY
+  // =====================
+  removeOne(productId: number): void {
+
+    this.cartService
+      .decreaseQuantity(
+        this.userId,
+        productId
+      )
+      .subscribe({
+
+        next: () => {
+
+          this.loadCart();
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Decrease failed',
+            err
+          );
+        }
+      });
+  }
+
+  // =====================
+  // CLEAR CART
+  // =====================
+  clearCart(): void {
+
+    this.cartService
+      .clearCart(this.userId)
+      .subscribe({
+
+        next: () => {
+
+          this.cartService.cartItems.set([]);
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Clear cart failed',
+            err
+          );
+        }
+      });
+  }
+
+  // =====================
+  // TOTAL
+  // =====================
+  getTotal(): number {
+
     return this.cartService.getTotal();
+  }
+
+  // =====================
+  // CART ITEMS
+  // =====================
+  get cartItems(): CartItem[] {
+
+    return this.cartService.cartItems();
   }
 }

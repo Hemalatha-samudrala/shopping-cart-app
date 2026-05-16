@@ -44,13 +44,26 @@ categories: any[] = [];
     });
   }
 
-  addToCart(product: any) {
-  const userId = this.auth.getUserId(); // from logged-in user
+addToCart(product: any) {
+
+  const userId = this.auth.getUserId();
+
   if (!userId) {
     alert('Please login first');
     return;
   }
-  this.cartService.addToCart(userId, product.Id);
+
+  this.cartService.addToCart(userId, product.Id)
+    .subscribe({
+      next: (res) => {
+        console.log('Added to cart:', res);
+      },
+      error: (err) => {
+        console.error('Add to cart failed:', err);
+        alert(err.error?.message || 'Failed to add to cart');
+      }
+    });
+
   console.log(product);
   }
 
