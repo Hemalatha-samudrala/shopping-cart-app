@@ -51,6 +51,7 @@ export class AdminProductsComponent implements OnInit {
       .getProducts(this.selectedCategory, this.searchText)
       .subscribe(res => {
         this.products = res.data;
+     
         console.log(res);
       });
   }
@@ -150,6 +151,5 @@ export class AdminProductsComponent implements OnInit {
     this.categories = res.data;
   });
 }
-
 
 }

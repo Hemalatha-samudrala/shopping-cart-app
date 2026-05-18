@@ -17,6 +17,7 @@ export class CartService {
   // STATE
   // =====================
   cartItems = signal<CartItem[]>([]);
+ 
 
   private apiUrl =
     `${environment.apiUrl}/api/cart`;
@@ -27,7 +28,7 @@ export class CartService {
   // LOAD CART
   // =====================
   loadCart(userId: number) {
-
+    
     return this.http.get<ApiResponse<CartItem[]>>(
       `${this.apiUrl}/${userId}`
     );
@@ -40,7 +41,6 @@ export class CartService {
     userId: number,
     productId: number
   ) {
-
     return this.http.post<ApiResponse<null>>(
       this.apiUrl,
       {
@@ -57,7 +57,7 @@ export class CartService {
     userId: number,
     productId: number
   ) {
-
+  
     return this.http.delete<ApiResponse<null>>(
       `${this.apiUrl}/${userId}/${productId}`
     );
@@ -81,7 +81,7 @@ export class CartService {
   // CLEAR CART
   // =====================
   clearCart(userId: number) {
-
+    
     return this.http.delete<ApiResponse<null>>(
       `${this.apiUrl}/${userId}`
     );
@@ -91,7 +91,6 @@ export class CartService {
   // TOTAL ITEMS
   // =====================
   totalItems(): number {
-
     return this.cartItems().reduce(
 
       (sum, item) =>

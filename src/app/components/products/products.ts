@@ -35,6 +35,7 @@ categories: any[] = [];
       .getProducts(this.selectedCategory, this.searchText)
       .subscribe(res => {
         this.products = res.data;
+         
       });
   }
      // 🔥 Load categories from DB
@@ -77,4 +78,5 @@ addToCart(product: any) {
   onSearch() {
     this.loadProducts();
   }
+ 
 }

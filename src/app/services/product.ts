@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -10,7 +10,7 @@ import { Category } from '../models/category';
   providedIn: 'root'
 })
 export class ProductService {
-
+  
   constructor(private http: HttpClient) {}
 
   // =====================
@@ -27,7 +27,7 @@ export class ProductService {
   // GET PRODUCTS (with filters)
   // =====================
   getProducts(categoryId: number | null, search: string) {
-
+    
     let url =
       `${environment.apiUrl}/api/products?search=${search}`;
 

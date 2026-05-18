@@ -64,7 +64,7 @@
 
 .product-card button:hover {
   background: #1d4ed8;
-  transform: scale(1.04);
+  transform: scale(1.0);
 }
 
 /* RESPONSIVE */
@@ -79,71 +79,150 @@
   }
 }
 
+/* =========================
+   TOP BAR (kept clean + aligned)
+========================= */
+
 .top-bar {
   display: flex;
   align-items: center;
   gap: 16px;
+
   padding: 16px 24px;
+
   background: white;
+
   border-bottom: 1px solid #eee;
 
-  flex-wrap: nowrap;  
-  overflow: hidden;    
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-/* TAB */
+/* =========================
+   CATEGORY TABS (MODERN CHIPS)
+========================= */
+
 .category-tabs {
   display: flex;
   gap: 10px;
-  flex-shrink: 0;   /* 🔥 prevents shrinking weirdly */
-  overflow-x: auto; /* optional for many tabs */
+
+  flex-shrink: 0;
+
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  scrollbar-width: none; /* Firefox */
+  
 }
+.category-tabs button {
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #007bff;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.category-tabs button:hover {
+  background: #1d4ed8;
+  transform: scale(1.0);
+}
+.category-tabs::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+/* =========================
+   TAB BUTTON
+========================= */
 
 .tab {
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: #f1f5f9;
+  padding: 8px 14px;
+
+  border-radius: 12px; /* softer than pill */
+
+  background: #f8fafc;
+
+  border: 1px solid #e5e7eb;
+
   cursor: pointer;
+
   font-size: 14px;
   font-weight: 500;
+
   white-space: nowrap;
+
+  color: #444;
+
+  transition: all 0.2s ease;
 }
 
+/* HOVER */
+.tab:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #2563eb;
+
+  transform: translateY(-1px);
+}
+
+/* ACTIVE STATE */
 .tab.active {
   background: #2563eb;
   color: white;
+
+  border-color: #2563eb;
+
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
 }
 
+/* =========================
+   SEARCH BOX (aligned better)
+========================= */
 
 .search-box {
   position: relative;
+
   flex: 1;
-  min-width: 0;        /* 🔥 CRITICAL FIX (prevents overflow) */
-  max-width: 450px;    /* adjust as needed */
+
+  min-width: 0;
+  max-width: 420px;
 }
 
-/* INPUT */
 .search-box input {
   width: 100%;
-  height: 48px;
-  padding: 0 16px 0 42px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
+  height: 44px;
+
+  padding: 0 16px 0 40px;
+
+  border-radius: 12px;
+
+  border: 1px solid #e5e7eb;
+
   font-size: 14px;
-  box-sizing: border-box; /* 🔥 prevents width overflow */
+
+  background: #fff;
+
+  transition: all 0.2s ease;
 }
 
-/* FOCUS */
 .search-box input:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* ICON */
 .search-box i {
   position: absolute;
   top: 50%;
-  left: 14px;
+  left: 12px;
+
   transform: translateY(-50%);
-  color: #888;
+
+  color: #9ca3af;
 }
+
+

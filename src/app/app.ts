@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner';
 import { AuthService } from './services/auth';
 import { CartService } from './services/cart';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule,LoadingSpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

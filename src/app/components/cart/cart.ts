@@ -63,14 +63,15 @@ export class CartComponent implements OnInit {
 
           this.cartService.cartItems
             .set(res.data);
+             
         },
 
         error: (err) => {
-
           console.error(
             'Failed to load cart',
             err
           );
+          
         }
       });
   }
@@ -195,4 +196,6 @@ export class CartComponent implements OnInit {
 
     return this.cartService.cartItems();
   }
+
+
 }
