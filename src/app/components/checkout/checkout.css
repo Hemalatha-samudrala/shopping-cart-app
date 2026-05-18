@@ -107,4 +107,14 @@ img {
   justify-content: center;
 
 }
+.stock-error {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+}
 
+.item.out-of-stock {
+  border: 1px solid #fca5a5;
+  background: #fff1f2;
+}

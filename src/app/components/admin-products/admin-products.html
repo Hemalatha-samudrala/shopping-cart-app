@@ -7,6 +7,7 @@
 
     <input [(ngModel)]="product.productName" placeholder="Product Name">
     <input [(ngModel)]="product.price" placeholder="Price">
+    <input type="number" [(ngModel)]="product.stock" placeholder="Stock" />
     <select [(ngModel)]="product.CategoryId">
   <option [ngValue]="null">Select Category</option>
   <option *ngFor="let c of categories" [ngValue]="c.Id">

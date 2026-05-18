@@ -10,4 +10,5 @@ export interface CartItem {
   imageUrl: string;
   product?: Product;
   totalPrice?: number;
+  stock?: number;
 }

@@ -27,7 +27,8 @@ export class AdminProductsComponent implements OnInit {
     id: null,
     productName: '',
     price: null,
-    CategoryId: null
+    CategoryId: null,
+    stock:null
   };
 
   selectedFile: File | null = null;
@@ -69,13 +70,14 @@ export class AdminProductsComponent implements OnInit {
     formData.append('productName', this.product.productName);
     formData.append('price', String(this.product.price ?? 0));
     formData.append('categoryId', String(this.product.CategoryId ?? ''));
-
+    formData.append('stock', String(this.product.stock ?? 0));
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
     console.log('CategoryId:', this.product.CategoryId);
     this.productService.addProduct(formData).subscribe({
       next: () => {
+        console.log(this.product);
         alert('Product added');
         this.resetForm();
         this.loadProducts();
@@ -96,7 +98,7 @@ export class AdminProductsComponent implements OnInit {
     this.product.productName = p.ProductName;
     this.product.price = p.Price;
     this.product.CategoryId = p.CategoryId;
-
+    this.product.stock = p.Stock;
     this.selectedFile = null;
   }
 
@@ -111,7 +113,7 @@ export class AdminProductsComponent implements OnInit {
     formData.append('productName', this.product.productName ?? '');
     formData.append('price', String(this.product.price ?? 0));
     formData.append('CategoryId', String(this.product.CategoryId ?? ''));
-
+    formData.append('stock', String(this.product.stock ?? 0));
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
@@ -123,7 +125,14 @@ export class AdminProductsComponent implements OnInit {
           this.resetForm();
           this.loadProducts();
         },
-        error: () => alert('Update failed')
+        error: (err) => {
+
+  console.log('UPDATE ERROR:', err);
+
+  alert(
+    err.error?.message || 'Update failed'
+  );
+}
       });
   }
 
@@ -140,7 +149,8 @@ export class AdminProductsComponent implements OnInit {
       id: null,
       productName: '',
       price: null,
-      CategoryId: null
+      CategoryId: null,
+      stock:null
     };
     this.selectedFile = null;
     this.isEditMode = false;

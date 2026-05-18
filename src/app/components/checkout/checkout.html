@@ -20,6 +20,10 @@
         {{ item.productName }} -
         {{ item.quantity }} x ${{ item.price }}
       </p>
+      <p *ngIf="item.quantity > (item.stock ?? 0)"
+       class="stock-error">
+      ❌ Only {{ item.stock }} left in stock
+    </p>
     </div>
 
     <hr />
@@ -28,10 +32,15 @@
     <h3>Total Items: {{ cartService.totalItems() }}</h3>
     <h3>Total Price: ${{ cartService.getTotal() }}</h3>
 
+    
+
     <!-- Place Order -->
-    <button (click)="placeOrder()">
-      Place Order
-    </button>
+    <button
+  (click)="placeOrder()"
+  [disabled]="!isCartValid() || isPlacingOrder">
+
+  Place Order
+</button>
 
   </div>
 
