@@ -9,6 +9,6 @@ export interface Order {
   status: 'Placed' | 'Processing' | 'Delivered' | 'Cancelled';
   orderCode:string;
   createdAt?: string;
-
+  previousStatus?: string;
   items?: CartItem[];
 }

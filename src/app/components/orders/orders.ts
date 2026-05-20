@@ -67,7 +67,10 @@ export class OrdersComponent implements OnInit {
 )
 .subscribe({
   next: (res) => {
-    this.orders = res.data;
+    this.orders = res.data.map(order => ({
+        ...order,
+        previousStatus: order.status
+      }));
   }
 });
   }
@@ -109,7 +112,14 @@ export class OrdersComponent implements OnInit {
 )
 .subscribe({
   next: (res) => {
-    this.orders = res.data;
+    this.orders = res.data.map(order => ({
+      ...order,
+      previousStatus: order.status
+    }));
+  },
+
+  error: (err) => {
+    console.error(err);
   }
 });
   }
@@ -150,4 +160,42 @@ export class OrdersComponent implements OnInit {
         ? null
         : orderId;
   }
+
+ onStatusChange(
+  event: Event,
+  order: any
+) {
+
+  const select =
+    event.target as HTMLSelectElement;
+
+  const newStatus =
+    select.value;
+
+  // confirm cancellation
+  if (newStatus === 'Cancelled') {
+
+    const confirmed = confirm(
+      `Cancel order ${order.orderCode}?`
+    );
+
+    // revert dropdown UI
+    if (!confirmed) {
+
+      select.value = order.status;
+
+      return;
+    }
+  }
+
+  // save previous
+  order.previousStatus =
+    order.status;
+
+  // update local model
+  order.status =
+    newStatus;
+
+  this.updateStatus(order);
+}
 }

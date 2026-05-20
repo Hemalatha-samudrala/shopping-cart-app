@@ -47,20 +47,15 @@ button {
 button:hover {
   opacity: 0.85;
 }
-
 /* Different button styles */
-button:nth-child(4) {
-  background: #28a745;
-  color: white;
-}
-
-button:nth-child(5) {
+.primary-btn {
   background: #007bff;
   color: white;
 }
 
-button:nth-child(6) {
-  background: #dc3545;
+
+.cancel-btn {
+  background: #ef4444;
   color: white;
 }
 
@@ -101,7 +96,7 @@ button:nth-child(6) {
 }
 
 .card p {
-  color: green;
+  color: #333;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -113,9 +108,9 @@ button:nth-child(6) {
   font-size: 13px;
 }
 
-.card button:first-child {
-  background: #ffc107;
-  color: black;
+.card button {
+  background: #007bff;
+  color: white;
 }
 
 .card button:last-child {

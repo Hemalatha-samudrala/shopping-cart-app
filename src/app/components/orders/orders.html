@@ -54,9 +54,9 @@
 
         <select *ngIf="isAdmin"
                 [(ngModel)]="order.status"
-                (change)="updateStatus(order)">
+                (focus)="order.previousStatus = order.status"
+                (change)="onStatusChange($event, order)">
           <option>Placed</option>
-          <option>Processing</option>
           <option>Delivered</option>
           <option>Cancelled</option>
         </select>

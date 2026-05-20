@@ -18,15 +18,15 @@
     <!-- IMAGE UPLOAD -->
     <input type="file" (change)="onFileSelected($event)">
 
-    <button *ngIf="!isEditMode" (click)="addProduct()">
+    <button *ngIf="!isEditMode" class="primary-btn" (click)="addProduct()">
       Add Product
     </button>
 
-    <button *ngIf="isEditMode" (click)="updateProduct()">
+    <button *ngIf="isEditMode" class="primary-btn" (click)="updateProduct()">
       Update Product
     </button>
 
-    <button *ngIf="isEditMode" (click)="resetForm()">
+    <button *ngIf="isEditMode" class="cancel-btn" (click)="resetForm()">
       Cancel
     </button>
 

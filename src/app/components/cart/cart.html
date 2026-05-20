@@ -8,8 +8,8 @@
   </div>
 
   <!-- Cart Items -->
-  <div class="cart-item" *ngFor="let item of cartService.cartItems()">
-
+  <div class="cart-item" *ngFor="let item of cartService.cartItems()"
+  [class.out-of-stock]="item.quantity > (item.stock ?? 0)">
     <img [src]="env.apiUrl + '/uploads/' + item.imageUrl"
          alt="{{ item.product?.productName }}"
          width="100" />
@@ -17,6 +17,9 @@
     <div class="item-details">
       <h3>{{ item.productName }}</h3>
       <h3>Price: ${{ item.price }}</h3>
+      <p class="stock-error" *ngIf="item.quantity > (item.stock ?? 0)">
+        ❌ Only {{ item.stock ?? 0 }} left in stock
+      </p>
       
       <div class="qty-controls">
         <button (click)="removeOne(item.productId)">-</button>
@@ -37,7 +40,7 @@
   </div>
 
   <!-- Checkout -->
-  <button class="checkout-btn" routerLink="/checkout">
+  <button class="checkout-btn" routerLink="/checkout" >
     Proceed to Checkout
   </button>
 

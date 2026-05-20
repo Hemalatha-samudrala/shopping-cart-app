@@ -280,3 +280,52 @@
     height: 80px;
   }
 }
+
+/* =========================
+   OUT OF STOCK STYLE
+========================= */
+
+.out-of-stock {
+  border: 2px solid #ef4444;
+  background: #fef2f2;
+
+  animation: shake 0.4s ease-in-out;
+}
+
+/* stock warning text */
+.stock-error {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   SHAKE ANIMATION
+========================= */
+
+@keyframes shake {
+
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-4px);
+  }
+
+  40% {
+    transform: translateX(4px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
