@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
 import { CartService } from '../../services/cart';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -32,9 +33,15 @@ export class LoginComponent {
     this.isRegisterMode = !this.isRegisterMode;
   }
 
+  
+
   login() {
     if (!this.email || !this.password) {
-      alert('Please enter email and password');
+       Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please enter email and password'
+    });
       return;
     }
 
@@ -59,15 +66,22 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        console.error(err);
-        alert(err.error?.message || 'Login failed');
+         Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text:'Please enter correct email and password'
+        });
       }
     });
   }
 
   register() {
     if (!this.email || !this.password) {
-      alert('Please enter email and password');
+       Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please enter email and password'
+    });
       return;
     }
 
@@ -76,11 +90,20 @@ export class LoginComponent {
       password: this.password
     }).subscribe({
       next: (res) => {
-        alert(res.message || 'Registered successfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Registered!',
+          text: 'Registered successfully',
+          timer: 1500,
+          showConfirmButton: false
+        });
       },
       error: (err) => {
-        console.error(err);
-        alert(err.error?.message || 'Registration failed');
+         Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Registration failed'
+        });
       }
     });
   }

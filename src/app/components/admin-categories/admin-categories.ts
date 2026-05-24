@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CategoryService } from '../../services/category';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-categories',
@@ -36,12 +37,22 @@ export class AdminCategoriesComponent implements OnInit {
     if (!this.newCategory.trim()) return;
     this.categoryService.add(this.newCategory).subscribe({
       next: () => { 
-        alert('Category added');
+        Swal.fire({
+  icon: 'success',
+  title: 'New Category',
+  text: 'Category added successfully',
+  timer: 2000,
+  showConfirmButton: false
+});
       this.newCategory = '';
       this.load();
       },
       error: (err) => {
-      alert(err.error?.message || 'Add failed');
+        Swal.fire({
+  icon: 'error',
+  title: 'Failed',
+  text: err.error?.message || 'Could not add category'
+});
       }
     });
   }
@@ -66,10 +77,27 @@ export class AdminCategoriesComponent implements OnInit {
 
   // DELETE
   deleteCategory(id: number) {
-    if (!confirm('Delete category?')) return;
-
-    this.categoryService.delete(id).subscribe(() => {
-      this.load();
-    });
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'This Category will be permanently deleted!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d33'
+      }).then((result) => {
+    if (result.isConfirmed) {
+        this.categoryService.delete(id).subscribe(() => {
+          Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              timer: 1500,
+              showConfirmButton: false
+            });
+    
+          this.load();
+        });
+      }
+      });
   }
 }

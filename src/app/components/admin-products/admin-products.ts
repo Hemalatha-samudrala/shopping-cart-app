@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { CategoryService } from '../../services/category';
 import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-products',
@@ -20,6 +20,11 @@ export class AdminProductsComponent implements OnInit {
   products: any[] = [];
   categories: any[] = [];
 
+  limit: number = 12;
+cursor: number | null = null;
+
+hasMore: boolean = true;
+loading: boolean = false;
 
   searchText: string = '';
 
@@ -42,20 +47,50 @@ export class AdminProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadProducts();
+    this.loadProducts(true);
      this.loadCategories();
   }
 
   // ---------- LOAD PRODUCTS ----------
-  loadProducts() {
-    this.productService
-      .getProducts(this.selectedCategory, this.searchText)
-      .subscribe(res => {
-        this.products = res.data;
-     
-        console.log(res);
-      });
+    loadProducts(reset: boolean = false) {
+
+  if (this.loading || (!this.hasMore && !reset)) return;
+
+  this.loading = true;
+
+  if (reset) {
+    this.products = [];
+    this.cursor = null;
+    this.hasMore = true;
   }
+
+  this.productService
+    .getProducts(
+      this.selectedCategory,
+      this.searchText,
+      this.limit,
+      this.cursor
+    )
+    .subscribe({
+      next: (res) => {
+
+  const data = res.data;
+
+  this.products = [
+    ...this.products,
+    ...data.products
+  ];
+
+  this.cursor = data.nextCursor;
+  this.hasMore = data.hasMore;
+
+  this.loading = false;
+},
+      error: () => {
+        this.loading = false;
+      }
+    });
+}
 
   // ---------- FILE SELECT ----------
   onFileSelected(event: any) {
@@ -78,14 +113,24 @@ export class AdminProductsComponent implements OnInit {
     this.productService.addProduct(formData).subscribe({
       next: () => {
         console.log(this.product);
-        alert('Product added');
+        Swal.fire({
+          icon: 'success',
+          title: 'Added!',
+          text: 'Product added',
+          timer: 1500,
+          showConfirmButton: false
+        });
         this.resetForm();
         this.loadProducts();
       },
       error: (err) => {
   console.log('BACKEND RESPONSE:', err.error);
 
-  alert(err.error?.message || 'Add failed');
+  Swal.fire({
+    icon: 'error',
+    title: 'Failed',
+    text: err.error?.message || 'Could not add product'
+  });
 }
     });
   }
@@ -105,14 +150,18 @@ export class AdminProductsComponent implements OnInit {
   // ---------- UPDATE PRODUCT ----------
  updateProduct() {
     if (!this.product.id) {
-    alert('Invalid product ID');
+    Swal.fire({
+      icon: 'warning',
+      title: 'Id Required',
+      text: 'Product Id not found'
+    });
     return;
   }
     const formData = new FormData();
 
     formData.append('productName', this.product.productName ?? '');
     formData.append('price', String(this.product.price ?? 0));
-    formData.append('CategoryId', String(this.product.CategoryId ?? ''));
+    formData.append('categoryId', String(this.product.CategoryId ?? ''));
     formData.append('stock', String(this.product.stock ?? 0));
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
@@ -121,27 +170,54 @@ export class AdminProductsComponent implements OnInit {
     this.productService.updateProduct(this.product.id, formData)
       .subscribe({
         next: () => {
-          alert('Updated successfully');
+          Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Product Updated',
+          timer: 1500,
+          showConfirmButton: false
+        });
           this.resetForm();
           this.loadProducts();
         },
         error: (err) => {
 
   console.log('UPDATE ERROR:', err);
-
-  alert(
-    err.error?.message || 'Update failed'
-  );
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: err.error?.message || 'Could not update product'
+          });
 }
       });
   }
 
   // ---------- DELETE ----------
   deleteProduct(id: number) {
+    Swal.fire({
+    title: 'Are you sure?',
+    text: 'This product will be permanently deleted!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
     this.productService.deleteProduct(id).subscribe(() => {
+      Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
       this.loadProducts();
     });
   }
+  });
+}
 
   // ---------- RESET ----------
   resetForm() {

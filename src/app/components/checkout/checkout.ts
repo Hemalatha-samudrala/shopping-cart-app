@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth';
 import { OrderService } from '../../services/order';
 
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-checkout',
@@ -46,9 +47,20 @@ export class CheckoutComponent {
   const items =
     this.cartService.cartItems();
 
-  if (!userId || !items.length) {
-
-    alert('Cart is empty');
+  if (!userId) {
+     Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first'
+    });
+    return;
+  }
+  if (!items.length) {
+     Swal.fire({
+      icon: 'warning',
+      title: 'Cart is empty',
+      text: 'No items added to the cart'
+    });
     return;
   }
 
@@ -74,8 +86,11 @@ export class CheckoutComponent {
     this.cartService.cartItems.set([]);
   },
   error: (err) => {
-    console.error(err);
-    alert(err.error?.message || 'Order failed');
+     Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not place the order'
+        });
   }
 });
   

@@ -48,7 +48,9 @@
       <button (click)="deleteProduct(p.Id)">Delete</button>
 
     </div>
-
+    <button (click)="loadProducts()" [disabled]="!hasMore">
+  Load More
+</button>
   </div>
 
 

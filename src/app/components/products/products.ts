@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-products',
@@ -15,9 +16,17 @@ import { environment } from '../../../environments/environment';
 export class ProductsComponent implements OnInit {
   env = environment;
   products: any[] = [];
-  searchText: string = '';
-  selectedCategory: number | null = null;
+
+searchText: string = '';
+selectedCategory: number | null = null;
+
 categories: any[] = [];
+
+limit: number = 12;
+cursor: number | null = null;
+
+hasMore: boolean = true;
+loading: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -30,14 +39,45 @@ categories: any[] = [];
     this.loadCategories();
   }
   
-    loadProducts() {
-    this.productService
-      .getProducts(this.selectedCategory, this.searchText)
-      .subscribe(res => {
-        this.products = res.data;
-         
-      });
+    loadProducts(reset: boolean = false) {
+
+  if (this.loading || (!this.hasMore && !reset)) return;
+
+  this.loading = true;
+
+  if (reset) {
+    this.products = [];
+    this.cursor = null;
+    this.hasMore = true;
   }
+
+  this.productService
+    .getProducts(
+      this.selectedCategory,
+      this.searchText,
+      this.limit,
+      this.cursor
+    )
+    .subscribe({
+      next: (res) => {
+
+  const data = res.data;
+
+  this.products = [
+    ...this.products,
+    ...data.products
+  ];
+
+  this.cursor = data.nextCursor;
+  this.hasMore = data.hasMore;
+
+  this.loading = false;
+},
+      error: () => {
+        this.loading = false;
+      }
+    });
+}
      // 🔥 Load categories from DB
   loadCategories() {
     this.productService.getCategories().subscribe(res => {
@@ -50,33 +90,45 @@ addToCart(product: any) {
   const userId = this.auth.getUserId();
 
   if (!userId) {
-    alert('Please login first');
+    Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first'
+    });
     return;
   }
 
   this.cartService.addToCart(userId, product.Id)
     .subscribe({
       next: (res) => {
-        console.log('Added to cart:', res);
+        Swal.fire({
+          icon: 'success',
+          title: 'Added!',
+          text: 'Product added to cart',
+          timer: 1500,
+          showConfirmButton: false
+        });
       },
       error: (err) => {
-        console.error('Add to cart failed:', err);
-        alert(err.error?.message || 'Failed to add to cart');
+         Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not add to cart'
+        });
       }
     });
 
-  console.log(product);
   }
 
    // TAB CLICK
   selectCategory(cat: any) {
   this.selectedCategory = cat ? cat.Id : null;
-  this.loadProducts();
+  this.loadProducts(true);
 }
 
   // SEARCH
   onSearch() {
-    this.loadProducts();
+    this.loadProducts(true);
   }
  
 }

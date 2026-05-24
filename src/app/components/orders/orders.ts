@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth';
 import { OrderService } from '../../services/order';
 import { Order } from '../../models/order';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-orders',
@@ -45,7 +46,11 @@ export class OrdersComponent implements OnInit {
     const id = this.auth.getUserId();
 
     if (!id) {
-      alert('Please login');
+      Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first'
+    });
       return;
     }
 
@@ -90,13 +95,20 @@ export class OrdersComponent implements OnInit {
         next: () => {
 
           console.log('Status updated');
+          Swal.fire({
+          icon: 'success',
+          title: 'Status updated!',
+          timer: 1500,
+          showConfirmButton: false
+        });
         },
 
         error: (err) => {
-
-          console.error(err);
-
-          alert('Failed to update status');
+           Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not update status'
+        });
         }
       });
   }
@@ -161,41 +173,61 @@ export class OrdersComponent implements OnInit {
         : orderId;
   }
 
- onStatusChange(
-  event: Event,
-  order: any
-) {
+onStatusChange(event: Event, order: any) {
 
-  const select =
-    event.target as HTMLSelectElement;
+  const select = event.target as HTMLSelectElement;
+  const newStatus = select.value;
 
-  const newStatus =
-    select.value;
-
-  // confirm cancellation
+  // If cancelling order → show confirmation dialog
   if (newStatus === 'Cancelled') {
 
-    const confirmed = confirm(
-      `Cancel order ${order.orderCode}?`
-    );
+    Swal.fire({
+      title: `Cancel Order ${order.orderCode}?`,
+      text: "This action cannot be undone",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it',
+      cancelButtonText: 'No, keep it',
+      confirmButtonColor: '#d33'
+    }).then((result) => {
 
-    // revert dropdown UI
-    if (!confirmed) {
+      if (!result.isConfirmed) {
 
-      select.value = order.status;
+        // revert dropdown
+        select.value = order.status;
+        return;
+      }
 
-      return;
-    }
+      // proceed with cancellation
+      order.previousStatus = order.status;
+      order.status = newStatus;
+
+      this.updateStatus(order);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Order Cancelled',
+        text: `Order ${order.orderCode} has been cancelled`,
+        timer: 2000,
+        showConfirmButton: false
+      });
+    });
+
+    return; // important to stop execution
   }
 
-  // save previous
-  order.previousStatus =
-    order.status;
-
-  // update local model
-  order.status =
-    newStatus;
+  // normal status change (no confirmation needed)
+  order.previousStatus = order.status;
+  order.status = newStatus;
 
   this.updateStatus(order);
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Status Updated',
+    text: `Order ${order.orderCode} updated to ${newStatus}`,
+    timer: 1500,
+    showConfirmButton: false
+  });
 }
 }

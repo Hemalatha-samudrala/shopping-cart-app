@@ -1,10 +1,11 @@
 import { Injectable,signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 import { ApiResponse } from '../models/api-response';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
+import { ProductCursorResponse } from '../models/ProductcursorResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -26,17 +27,29 @@ export class ProductService {
   // =====================
   // GET PRODUCTS (with filters)
   // =====================
-  getProducts(categoryId: number | null, search: string) {
-    
-    let url =
-      `${environment.apiUrl}/api/products?search=${search}`;
+getProducts(
+  categoryId: number | null,
+  search: string,
+  limit: number = 8,
+  cursor?: number | null
+) {
+  let params = new HttpParams()
+    .set('search', search)
+    .set('limit', limit);
 
-    if (categoryId !== null) {
-      url += `&categoryId=${categoryId}`;
-    }
-
-    return this.http.get<ApiResponse<Product[]>>(url);
+  if (categoryId !== null) {
+    params = params.set('categoryId', categoryId);
   }
+
+  if (cursor !== null && cursor !== undefined) {
+    params = params.set('cursor', cursor);
+  }
+
+  return this.http.get<ApiResponse<ProductCursorResponse>>(
+    `${environment.apiUrl}/api/products`,
+    { params }
+  );
+}
 
   // =====================
   // GET CATEGORIES

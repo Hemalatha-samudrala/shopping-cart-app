@@ -34,7 +34,11 @@
 
     <button (click)="addToCart(product)">Add to Cart</button>
   </div>
+  <button (click)="loadProducts()" [disabled]="!hasMore">
+  Load More
+</button>
 </div>
+
 
 <div *ngIf="products.length === 0">
   No products found

@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth';
 
 import { CartItem } from '../../models/cart-item';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -39,8 +40,12 @@ export class CartComponent implements OnInit {
     const id = this.auth.getUserId();
 
     if (!id) {
-
-      console.error('User not logged in');
+      Swal.fire({
+  icon: 'warning',
+  title: 'Login Required',
+  text: 'Please login first',
+  confirmButtonColor: '#3085d6'
+});
 
       return;
     }
@@ -67,10 +72,11 @@ export class CartComponent implements OnInit {
         },
 
         error: (err) => {
-          console.error(
-            'Failed to load cart',
-            err
-          );
+           Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not load cart'
+        });
           
         }
       });
@@ -79,28 +85,42 @@ export class CartComponent implements OnInit {
   // =====================
   // REMOVE ITEM
   // =====================
-  removeItem(productId: number): void {
-
-    this.cartService
+  removeItem(productId: number) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'This item will be removed from cart',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d33'
+      }).then((result) => {
+    
+        if (result.isConfirmed) {
+        this.cartService
       .removeFromCart(
         this.userId,
         productId
-      )
-      .subscribe({
-
-        next: () => {
-
+      ).subscribe({next: () => {
+          Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              timer: 1500,
+              showConfirmButton: false
+            });
+    
           this.loadCart();
         },
-
         error: (err) => {
-
-          console.error(
-            'Remove failed',
-            err
-          );
+           Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not remove item'
+        });
         }
       });
+    }
+    });
   }
 
   // =====================
@@ -122,10 +142,11 @@ export class CartComponent implements OnInit {
 
         error: (err) => {
 
-          console.error(
-            'Add failed',
-            err
-          );
+           Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not increase the count'
+        });
         }
       });
   }
@@ -149,10 +170,11 @@ export class CartComponent implements OnInit {
 
         error: (err) => {
 
-          console.error(
-            'Decrease failed',
-            err
-          );
+           Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not decrease the count'
+        });
         }
       });
   }
