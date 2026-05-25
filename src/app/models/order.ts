@@ -6,7 +6,7 @@ export interface Order {
 
   totalPrice: number;
   email?:string;
-  status: 'Placed' | 'Processing' | 'Delivered' | 'Cancelled';
+  status: 'PENDING' | 'CONFIRMED' | 'DELIVERED' | 'CANCELLED';
   orderCode:string;
   createdAt?: string;
   previousStatus?: string;

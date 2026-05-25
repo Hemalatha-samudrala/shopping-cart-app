@@ -179,7 +179,7 @@ onStatusChange(event: Event, order: any) {
   const newStatus = select.value;
 
   // If cancelling order → show confirmation dialog
-  if (newStatus === 'Cancelled') {
+  if (newStatus === 'CANCELLED') {
 
     Swal.fire({
       title: `Cancel Order ${order.orderCode}?`,

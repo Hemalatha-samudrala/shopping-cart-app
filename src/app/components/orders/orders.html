@@ -10,10 +10,10 @@
          
     <select [(ngModel)]="statusFilter" (change)="applyFilters()">
       <option value="">All Status</option>
-      <option>Placed</option>
-      <option>Processing</option>
-      <option>Delivered</option>
-      <option>Cancelled</option>
+      <option>PENDING</option>
+      <option>CONFIRMED</option>
+      <option>DELIVERED</option>
+      <option>CANCELLED</option>
     </select>
 
     <input type="date"
@@ -53,13 +53,16 @@
         <span *ngIf="!isAdmin">{{ order.status }}</span>
 
         <select *ngIf="isAdmin"
-                [(ngModel)]="order.status"
-                (focus)="order.previousStatus = order.status"
-                (change)="onStatusChange($event, order)">
-          <option>Placed</option>
-          <option>Delivered</option>
-          <option>Cancelled</option>
-        </select>
+        [(ngModel)]="order.status"
+        (focus)="order.previousStatus = order.status"
+        (change)="onStatusChange($event, order)">
+
+  <option value="PENDING">PENDING</option>
+  <option value="CONFIRMED">CONFIRMED</option>
+  <option value="DELIVERED">DELIVERED</option>
+  <option value="CANCELLED">CANCELLED</option>
+
+</select>
       </div>
 
       <div class="arrow">
