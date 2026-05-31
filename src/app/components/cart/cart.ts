@@ -37,50 +37,31 @@ export class CartComponent implements OnInit {
   // =====================
   ngOnInit(): void {
 
-    const id = this.auth.getUserId();
+  if (!this.auth.isLoggedIn()) {
 
-    if (!id) {
-      Swal.fire({
-  icon: 'warning',
-  title: 'Login Required',
-  text: 'Please login first',
-  confirmButtonColor: '#3085d6'
-});
+    Swal.fire({
+      icon: 'warning',
+      title: 'Login Required',
+      text: 'Please login first',
+      confirmButtonColor: '#3085d6'
+    });
 
-      return;
-    }
-
-    this.userId = id;
-
-    this.loadCart();
+    return;
   }
 
-  // =====================
+  this.loadCart();
+}
+// =====================
   // LOAD CART
   // =====================
-  loadCart(): void {
+loadCart()
+ {
+  this.cartService.loadCart().subscribe({
+    next: (res) => {
+      this.cartService.cartItems.set(res.data);
+    }
+  });}
 
-    this.cartService
-      .loadCart(this.userId)
-      .subscribe({
-
-        next: (res) => {
-
-          this.cartService.cartItems
-            .set(res.data);
-             
-        },
-
-        error: (err) => {
-           Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: err.error?.message || 'Could not load cart'
-        });
-          
-        }
-      });
-  }
 
   // =====================
   // REMOVE ITEM
@@ -99,7 +80,6 @@ export class CartComponent implements OnInit {
         if (result.isConfirmed) {
         this.cartService
       .removeFromCart(
-        this.userId,
         productId
       ).subscribe({next: () => {
           Swal.fire({
@@ -108,7 +88,7 @@ export class CartComponent implements OnInit {
               timer: 1500,
               showConfirmButton: false
             });
-    
+
           this.loadCart();
         },
         error: (err) => {
@@ -130,7 +110,6 @@ export class CartComponent implements OnInit {
 
     this.cartService
       .addToCart(
-        this.userId,
         productId
       )
       .subscribe({
@@ -158,7 +137,6 @@ export class CartComponent implements OnInit {
 
     this.cartService
       .decreaseQuantity(
-        this.userId,
         productId
       )
       .subscribe({
@@ -185,7 +163,7 @@ export class CartComponent implements OnInit {
   clearCart(): void {
 
     this.cartService
-      .clearCart(this.userId)
+      .clearCart()
       .subscribe({
 
         next: () => {

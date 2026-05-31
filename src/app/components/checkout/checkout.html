@@ -6,24 +6,49 @@
 </div>
 <div class="checkout-container">
 
-  <h2>Checkout</h2>
 
   <!-- 🛒 SHOW ONLY BEFORE ORDER -->
   <div *ngIf="!orderPlaced">
-
+      <h2>Checkout</h2>
     <!-- Cart Items -->
-    <div *ngFor="let item of cartService.cartItems()" class="item">
-      <img [src]="env.apiUrl + '/uploads/' + item.imageUrl" 
-    width="80"
+    <div *ngFor="let item of cartService.cartItems()" class="checkout-item">
+
+  <img
+    [src]="env.apiUrl + '/uploads/' + item.imageUrl"
+    class="checkout-image"
+    alt="{{ item.productName }}"
   />
-      <p>
-        {{ item.productName }} -
-        {{ item.quantity }} x ${{ item.price }}
-      </p>
-      <p *ngIf="item.quantity > (item.stock ?? 0)"
-       class="stock-error">
+
+  <div class="checkout-details">
+
+    <div class="checkout-row">
+      <span class="product-name">
+        {{ item.productName }}
+      </span>
+
+      <span class="product-total">
+        ${{ item.price * item.quantity }}
+      </span>
+    </div>
+
+    <div class="checkout-row quantity-row">
+      <span>
+        Qty: {{ item.quantity }}
+      </span>
+
+      <span>
+        ${{ item.price }} each
+      </span>
+    </div>
+
+    <p
+      *ngIf="item.quantity > (item.stock ?? 0)"
+      class="stock-error">
       ❌ Only {{ item.stock }} left in stock
     </p>
+
+  </div>
+
     </div>
 
     <hr />

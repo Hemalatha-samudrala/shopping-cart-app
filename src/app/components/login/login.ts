@@ -35,45 +35,62 @@ export class LoginComponent {
 
   
 
-  login() {
-    if (!this.email || !this.password) {
-       Swal.fire({
+ login() {
+
+  if (!this.email || !this.password) {
+
+    Swal.fire({
       icon: 'warning',
       title: 'Login Required',
       text: 'Please enter email and password'
     });
-      return;
-    }
 
-    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, {
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: (res) => {
-        console.log('Login success:', res);
-        console.log('Role:', res.user.role);
-        // Save session
-        this.auth.login(res.user.id,res.user.email, res.user.role,res.token);
-
-        // Load cart for user
-        this.cartService.loadCart(res.user.id);
-
-        // Navigate by role
-        if (res.user.role === 'Admin') {
-          this.router.navigate(['/admin-products']);
-        } else {
-          this.router.navigate(['/products']);
-        }
-      },
-      error: (err) => {
-         Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text:'Please enter correct email and password'
-        });
-      }
-    });
+    return;
   }
+
+  this.http.post<any>(`${environment.apiUrl}/api/auth/login`, {
+    email: this.email,
+    password: this.password
+  }).subscribe({
+    next: (res) => {
+
+      console.log('Login success:', res);
+
+      // ✅ FIX: correct path
+      const user = res.data.user;
+      const token = res.data.token;
+
+      console.log('Role:', user.role);
+
+      // Save session
+      this.auth.login(
+        user.id,
+        user.email,
+        user.role,
+        token
+      );
+
+      // Load cart
+      this.cartService.loadCart();
+
+      // Navigate by role
+      if (user.role === 'Admin') {
+        this.router.navigate(['/admin-products']);
+      } else {
+        this.router.navigate(['/products']);
+      }
+    },
+
+    error: (err) => {
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: 'Please enter correct email and password'
+      });
+    }
+  });
+}
 
   register() {
     if (!this.email || !this.password) {
@@ -89,7 +106,7 @@ export class LoginComponent {
       email: this.email,
       password: this.password
     }).subscribe({
-      next: (res) => {
+      next: () => {
         Swal.fire({
           icon: 'success',
           title: 'Registered!',

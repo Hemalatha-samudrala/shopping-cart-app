@@ -8,11 +8,11 @@
   padding: 20px;
 }
 
+
 .cart-container h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #222;
+  text-align: center;
   margin-bottom: 20px;
+  color: #333;
 }
 
 /* =========================
@@ -79,20 +79,29 @@
 ========================= */
 
 .item-details {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 12px;
+}
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.item-details h3 {
+.top-row h3 {
   margin: 0;
-
   font-size: 18px;
   font-weight: 600;
-
-  color: #222;
 }
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 
 /* =========================
@@ -114,25 +123,19 @@
 .qty-controls {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 6px;
 }
 
 .qty-controls button {
   width: 32px;
   height: 32px;
-
   border: none;
   border-radius: 8px;
-
   background: #2563eb;
   color: white;
-
   font-size: 16px;
   font-weight: 700;
-
   cursor: pointer;
-
-  transition: all 0.2s ease;
 }
 
 .qty-controls button:hover {
@@ -141,33 +144,24 @@
 }
 
 .qty-controls span {
-  font-size: 16px;
-  font-weight: 600;
-  min-width: 20px;
+  min-width: 24px;
   text-align: center;
+  font-weight: 600;
 }
 
 /* =========================
    REMOVE BUTTON
 ========================= */
-
 .remove {
   padding: 8px 14px;
-
   border: none;
   border-radius: 8px;
-
   background: #ef4444;
   color: white;
-
   font-size: 13px;
   font-weight: 600;
-
   cursor: pointer;
-
-  transition: all 0.2s ease;
 }
-
 .remove:hover {
   background: #dc2626;
 }
@@ -178,22 +172,15 @@
 
 .summary {
   margin-top: 24px;
-
   background: #fff;
-
   border-radius: 14px;
-
   padding: 18px 20px;
-
   box-shadow:
     0 4px 10px rgba(0,0,0,0.06);
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: 12px;
 }
 
@@ -284,13 +271,6 @@
 /* =========================
    OUT OF STOCK STYLE
 ========================= */
-
-.out-of-stock {
-  border: 2px solid #ef4444;
-  background: #fef2f2;
-
-  animation: shake 0.4s ease-in-out;
-}
 
 /* stock warning text */
 .stock-error {

@@ -1,11 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
 import { environment } from '../../environments/environment';
-
 import { ApiResponse } from '../models/api-response';
-
 import { CartItem } from '../models/cart-item';
 
 @Injectable({
@@ -17,62 +13,43 @@ export class CartService {
   // STATE
   // =====================
   cartItems = signal<CartItem[]>([]);
- 
 
-  private apiUrl =
-    `${environment.apiUrl}/api/cart`;
+  private apiUrl = `${environment.apiUrl}/api/cart`;
 
   constructor(private http: HttpClient) {}
 
   // =====================
   // LOAD CART
   // =====================
-  loadCart(userId: number) {
-    
-    return this.http.get<ApiResponse<CartItem[]>>(
-      `${this.apiUrl}/${userId}`
-    );
+  loadCart() {
+    return this.http.get<ApiResponse<CartItem[]>>(this.apiUrl);
   }
+
 
   // =====================
   // ADD TO CART
   // =====================
-  addToCart(
-    userId: number,
-    productId: number
-  ) {
-    return this.http.post<ApiResponse<null>>(
-      this.apiUrl,
-      {
-        userId,
-        productId
-      }
-    );
+  addToCart(productId: number) {
+    return this.http.post<ApiResponse<null>>(this.apiUrl, {
+      productId
+    });
   }
 
   // =====================
-  // REMOVE FROM CART
+  // REMOVE ITEM
   // =====================
-  removeFromCart(
-    userId: number,
-    productId: number
-  ) {
-  
+  removeFromCart(productId: number) {
     return this.http.delete<ApiResponse<null>>(
-      `${this.apiUrl}/${userId}/${productId}`
+      `${this.apiUrl}/${productId}`
     );
   }
 
   // =====================
   // DECREASE QUANTITY
   // =====================
-  decreaseQuantity(
-    userId: number,
-    productId: number
-  ) {
-
+  decreaseQuantity(productId: number) {
     return this.http.put<ApiResponse<null>>(
-      `${this.apiUrl}/${userId}/${productId}`,
+      `${this.apiUrl}/${productId}`,
       {}
     );
   }
@@ -80,10 +57,9 @@ export class CartService {
   // =====================
   // CLEAR CART
   // =====================
-  clearCart(userId: number) {
-    
+  clearCart() {
     return this.http.delete<ApiResponse<null>>(
-      `${this.apiUrl}/${userId}`
+      this.apiUrl
     );
   }
 
@@ -92,11 +68,7 @@ export class CartService {
   // =====================
   totalItems(): number {
     return this.cartItems().reduce(
-
-      (sum, item) =>
-
-        sum + item.quantity,
-
+      (sum, item) => sum + item.quantity,
       0
     );
   }
@@ -105,13 +77,9 @@ export class CartService {
   // TOTAL PRICE
   // =====================
   getTotal(): number {
-
     return this.cartItems().reduce(
-      (sum, item) =>
-        sum + (item.price * item.quantity),
+      (sum, item) => sum + (item.price * item.quantity),
       0
     );
   }
-
-  
 }

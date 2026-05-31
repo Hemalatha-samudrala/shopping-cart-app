@@ -83,7 +83,7 @@ export class OrderService {
   }
 
   return this.http.get<ApiResponse<Order[]>>(
-    `${this.apiUrl}/${userId}`,
+    `${this.apiUrl}/user/${userId}`,
     { params }
   );
 }

@@ -98,7 +98,7 @@ addToCart(product: any) {
     return;
   }
 
-  this.cartService.addToCart(userId, product.Id)
+  this.cartService.addToCart(product.Id)
     .subscribe({
       next: (res) => {
         Swal.fire({
