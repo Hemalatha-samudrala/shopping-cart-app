@@ -11,4 +11,5 @@ export interface CartItem {
   product?: Product;
   totalPrice?: number;
   stock?: number;
+  availability?:string;
 }

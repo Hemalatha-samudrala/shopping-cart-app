@@ -20,6 +20,12 @@
     <h3>{{ item.productName }}</h3>
     <h3>${{ item.price }}</h3>
   </div>
+  <p
+  *ngIf="item.availability === 'OutOfStock'"
+  class="stock-error"
+>
+  Out of stock
+</p>
 
   <p
     class="stock-error"
@@ -44,13 +50,13 @@
   </div>
 
     </div>
-
+ </div>
     <!-- Summary -->
   <div class="summary">
     <h3>Total Items: {{ cartService.totalItems() }}</h3>
     <h3>Total Price: ${{ cartService.getTotal() }}</h3>
   </div>
-  </div>
+ 
 
   <!-- Checkout -->
   <button class="checkout-btn" routerLink="/checkout" >
