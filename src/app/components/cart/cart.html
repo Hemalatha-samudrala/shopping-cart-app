@@ -10,7 +10,7 @@
   <!-- Cart Items -->
   <div class="cart-item" *ngFor="let item of cartService.cartItems()"
   [class.out-of-stock]="item.quantity > (item.stock ?? 0)">
-    <img [src]="env.apiUrl + '/uploads/' + item.imageUrl"
+    <img [src]="item.imageUrl"
          alt="{{ item.product?.productName }}"
          width="100" />
 

@@ -25,7 +25,7 @@
 </div>
 <div class="products-container">
   <div class="product-card" *ngFor="let product of products">
-    <img [src]="env.apiUrl + '/uploads/' + product.ImageUrl" 
+    <img [src]="product.ImageUrl" 
          [alt]="product.ProductName"
          width="150" />
 
