@@ -123,6 +123,8 @@ addToCart(product: any) {
    // TAB CLICK
   selectCategory(cat: any) {
   this.selectedCategory = cat ? cat.Id : null;
+  this.cursor = null;
+  this.hasMore = true;
   this.loadProducts(true);
 }
 
