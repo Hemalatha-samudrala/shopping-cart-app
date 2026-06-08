@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
@@ -6,11 +6,13 @@ import { OrderService } from '../../services/order';
 import { Order } from '../../models/order';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
+import { LoadingService } from '../../services/loading';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,LoadingSpinnerComponent],
   templateUrl: './orders.html',
   styleUrl: './orders.css'
 })
@@ -20,12 +22,12 @@ export class OrdersComponent implements OnInit {
   // STATE
   // =====================
   env=environment;
-  orders: Order[] = [];
+  orders = signal<Order[]>([]);
   stats: any[] = [];
   userId!: number;
   isAdmin = false;
   expandedOrderId: number | null = null;
-
+  loading: boolean = false;
   // =====================
   // FILTERS
   // =====================
@@ -35,7 +37,8 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private loadingService:LoadingService
   ) {}
 
   // =====================
@@ -63,7 +66,7 @@ export class OrdersComponent implements OnInit {
   // LOAD USER ORDERS
   // =====================
   loadOrders() {
-
+    this.loadingService.show();
    this.orderService.getOrdersById(
   this.userId,
   this.statusFilter,
@@ -72,10 +75,11 @@ export class OrdersComponent implements OnInit {
 )
 .subscribe({
   next: (res) => {
-    this.orders = res.data.map(order => ({
+    this.orders.set(res.data.map(order => ({
         ...order,
         previousStatus: order.status
-      }));
+      })));
+      this.loadingService.hide();
   }
 });
   }
@@ -117,6 +121,7 @@ export class OrdersComponent implements OnInit {
   // ADMIN LOAD ORDERS
   // =====================
   loadAllOrders() {
+    this.loadingService.show();
     this.orderService.getOrders(
   this.statusFilter,
   this.dateFilter,
@@ -124,14 +129,15 @@ export class OrdersComponent implements OnInit {
 )
 .subscribe({
   next: (res) => {
-    this.orders = res.data.map(order => ({
+    this.orders.set(res.data.map(order => ({
       ...order,
       previousStatus: order.status
-    }));
+    })));
+    this.loadingService.hide();
   },
 
   error: (err) => {
-    console.error(err);
+    this.loadingService.hide();
   }
 });
   }

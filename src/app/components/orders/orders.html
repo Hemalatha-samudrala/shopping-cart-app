@@ -24,20 +24,22 @@
   <!-- SUMMARY -->
   <div class="summary-card">
     <h3>
-      {{ orders.length }}
-      {{ orders.length === 1 ? 'Order' : 'Orders' }}
+      {{ orders().length }}
+      {{ orders().length === 1 ? 'Order' : 'Orders' }}
     </h3>
   </div>
+  <!-- LOADING -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
 
   <!-- EMPTY STATE -->
-  <div *ngIf="orders.length === 0" class="empty-state">
+  <div *ngIf="orders().length === 0" class="empty-state">
     <h3>😕 No orders found</h3>
     <p>Try changing filters</p>
   </div>
 
   <!-- ✅ FIX: ADD *ngFor HERE -->
   <div class="order-card"
-       *ngFor="let order of orders">
+       *ngFor="let order of orders()">
 
     <!-- HEADER -->
     <div class="order-header"

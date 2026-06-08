@@ -10,6 +10,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
 .filter-bar select,
@@ -93,3 +94,4 @@
   border: 1px solid #ccc;
   width: 200px;
 }
+

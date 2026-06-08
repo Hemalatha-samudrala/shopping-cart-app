@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { CategoryService } from '../../services/category';
 import { ProductService } from '../../services/product';
 import { AuthService } from '../../services/auth';
+import { LoadingService } from '../../services/loading';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,8 +18,8 @@ import Swal from 'sweetalert2';
 })
 export class AdminProductsComponent implements OnInit {
   env = environment;
-  products: any[] = [];
-  categories: any[] = [];
+  products = signal<any[]>([]);
+  categories = signal<any[]>([]);
 
   limit: number = 12;
 cursor: number | null = null;
@@ -43,7 +44,8 @@ loading: boolean = false;
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
-    private auth: AuthService
+    private auth: AuthService,
+    private loadingService:LoadingService
   ) {}
 
   ngOnInit() {
@@ -56,10 +58,10 @@ loading: boolean = false;
 
   if (this.loading || (!this.hasMore && !reset)) return;
 
-  this.loading = true;
+  this.loadingService.show();
 
   if (reset) {
-    this.products = [];
+    this.products.set([]);
     this.cursor = null;
     this.hasMore = true;
   }
@@ -76,18 +78,19 @@ loading: boolean = false;
 
   const data = res.data;
 
-  this.products = [
-    ...this.products,
+  this.products.set([
+    ...this.products(),
     ...data.products
-  ];
+  ]);
 
   this.cursor = data.nextCursor;
   this.hasMore = data.hasMore;
 
-  this.loading = false;
+  this.loadingService.hide();
+
 },
       error: () => {
-        this.loading = false;
+        this.loadingService.hide();
       }
     });
 }
@@ -109,10 +112,9 @@ loading: boolean = false;
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
-    console.log('CategoryId:', this.product.CategoryId);
     this.productService.addProduct(formData).subscribe({
       next: () => {
-        console.log(this.product);
+      
         Swal.fire({
           icon: 'success',
           title: 'Added!',
@@ -120,11 +122,12 @@ loading: boolean = false;
           timer: 1500,
           showConfirmButton: false
         });
-        this.resetForm();
-        this.loadProducts();
+        setTimeout(() => {
+    this.resetForm();
+    this.loadProducts(true);
+  });
       },
       error: (err) => {
-  console.log('BACKEND RESPONSE:', err.error);
 
   Swal.fire({
     icon: 'error',
@@ -177,8 +180,10 @@ loading: boolean = false;
           timer: 1500,
           showConfirmButton: false
         });
-          this.resetForm();
-          this.loadProducts();
+          setTimeout(() => {
+    this.resetForm();
+    this.loadProducts(true);
+  });
         },
         error: (err) => {
 
@@ -213,7 +218,9 @@ loading: boolean = false;
           showConfirmButton: false
         });
 
-      this.loadProducts();
+       setTimeout(() => {
+    this.loadProducts(true);
+  });
     });
   }
   });
@@ -234,7 +241,7 @@ loading: boolean = false;
 
   loadCategories() {
   this.categoryService.getAll().subscribe((res: any) => {
-    this.categories = res.data;
+    this.categories.set(res.data);
   });
 }
 

@@ -71,7 +71,7 @@ export class LoginComponent {
       );
 
       // Load cart
-      this.cartService.loadCart();
+      this.cartService.loadCart().subscribe();
 
       // Navigate by role
       if (user.role === 'Admin') {

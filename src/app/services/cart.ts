@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/api-response';
 import { CartItem } from '../models/cart-item';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,18 +23,31 @@ export class CartService {
   // LOAD CART
   // =====================
   loadCart() {
-    return this.http.get<ApiResponse<CartItem[]>>(this.apiUrl);
-  }
+  return this.http
+    .get<ApiResponse<CartItem[]>>(this.apiUrl)
+    .pipe(
+      tap(res => {
+        this.cartItems.set(res.data);
+      })
+    );
+}
 
 
   // =====================
   // ADD TO CART
   // =====================
-  addToCart(productId: number) {
-    return this.http.post<ApiResponse<null>>(this.apiUrl, {
-      productId
-    });
-  }
+  addToCart(productId: number, quantity: number = 1) {
+
+  return this.http.post<ApiResponse<CartItem[]>>(
+    `${this.apiUrl}`,
+    { productId, quantity }
+  ).pipe(
+    tap(() => {
+      // reload full cart after update
+      this.loadCart().subscribe();
+    })
+  );
+}
 
   // =====================
   // REMOVE ITEM

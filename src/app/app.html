@@ -7,8 +7,9 @@
       <a routerLink="/admin-products" *ngIf="auth.isAdmin()">Admin</a>
       <a routerLink="/admin-categories" *ngIf="auth.isAdmin()">Categories</a>
     <a routerLink="/cart" *ngIf="auth.isUser()">
-      Cart ({{ cartService.cartItems().length }})
+      Cart ({{ this.cartService.cartItems().length }})
     </a>
+    
     <a routerLink="/orders" routerLinkActive="active">Orders</a>
 
     <button (click)="logout()">Logout</button>

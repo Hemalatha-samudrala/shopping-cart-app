@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CategoryService } from '../../services/category';
+import { LoadingService } from '../../services/loading';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,21 +15,25 @@ import Swal from 'sweetalert2';
 })
 export class AdminCategoriesComponent implements OnInit {
 
-  categories: any[] = [];
+  categories = signal<any[]>([]);
   newCategory: string = '';
   editId: number | null = null;
   editName: string = '';
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService,
+    private loadingService:LoadingService
+  ) {}
 
   ngOnInit() {
     this.load();
   }
 
   load() {
+    this.loadingService.show();
     this.categoryService.getAll().subscribe(res => {
-      this.categories = res.data;
-      console.log(res);
+      this.categories.set (res.data);
+      this.loadingService.hide();
+      
     });
   }
 

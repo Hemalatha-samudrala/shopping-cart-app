@@ -1,68 +1,65 @@
 import { Injectable, signal } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  // ---------- STATE ----------
   currentUserId = signal<number | null>(null);
   currentUser = signal<string | null>(null);
   currentRole = signal<string | null>(null);
 
-  // ---------- LOGIN ----------
-  login(
-  id: number,
-  email: string,
-  role: string,
-  token: string
-) {
+  // 🔥 IMPORTANT
+  token = signal<string | null>(localStorage.getItem('token'));
 
-  this.currentUserId.set(id);
-  this.currentUser.set(email);
-  this.currentRole.set(role);
+  login(id: number, email: string, role: string, token: string) {
 
-  localStorage.setItem('userId', id.toString());
+    console.log('LOGIN TOKEN RECEIVED:', token);
 
-  localStorage.setItem('user', email);
+    this.currentUserId.set(id);
+    this.currentUser.set(email);
+    this.currentRole.set(role);
 
-  localStorage.setItem('role', role);
+    this.token.set(token); // ✅ MUST be here
 
-  localStorage.setItem('token', token);
-}
-
-  // ---------- LOGOUT ----------
-  logout() {
-
-  this.currentUser.set(null);
-  this.currentRole.set(null);
-
-  localStorage.removeItem('user');
-
-  localStorage.removeItem('role');
-
-  localStorage.removeItem('userId');
-
-  localStorage.removeItem('token');
-}
-
-  // ---------- LOAD USER ON APP START ----------
-  loadUser(): string | null {
-     const id = localStorage.getItem('userId');
-    const user = localStorage.getItem('user');
-    const role = localStorage.getItem('role');
-
-    if (id && user) {
-      this.currentUserId.set(+id);
-      this.currentUser.set(user);
-      this.currentRole.set(role);
-      return user;
-    }
-
-    return null;
+    localStorage.setItem('token', token);
   }
 
-  // ---------- GETTERS ----------
+  logout() {
+
+    this.currentUserId.set(null);
+    this.currentUser.set(null);
+    this.currentRole.set(null);
+
+    this.token.set(null);
+
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.token();
+  }
+
+
+  // =====================
+  // LOAD USER ON APP START
+  // =====================
+  private loadUser(): void {
+
+    const id = localStorage.getItem('userId');
+    const user = localStorage.getItem('user');
+    const role = localStorage.getItem('role');
+    const token = localStorage.getItem('token');
+
+    if (id && user && role && token) {
+
+      this.currentUserId.set(Number(id));
+      this.currentUser.set(user);
+      this.currentRole.set(role);
+    }
+  }
+
+  // =====================
+  // GETTERS
+  // =====================
   getUser(): string | null {
     return this.currentUser();
   }
@@ -70,20 +67,20 @@ export class AuthService {
   getRole(): string | null {
     return this.currentRole();
   }
-  getUserId(): number | null {
-  return this.currentUserId();
-} 
 
-  // ---------- STATUS CHECKS ----------
-  isLoggedIn(): boolean {
-    return this.currentUser() !== null;
+  getUserId(): number | null {
+    return this.currentUserId();
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   isAdmin(): boolean {
-    return this.currentRole() === 'Admin';
+    return this.currentRole()?.toLowerCase() === 'admin';
   }
 
   isUser(): boolean {
-    return this.currentRole() === 'User';
+    return this.currentRole()?.toLowerCase() === 'user';
   }
 }

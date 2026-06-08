@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,signal } from '@angular/core';
 import { ProductService } from '../../services/product';
 import { CartService } from '../../services/cart';
 import { CommonModule } from '@angular/common';
@@ -6,21 +6,23 @@ import { AuthService } from '../../services/auth';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner';
+import { LoadingService } from '../../services/loading';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,LoadingSpinnerComponent],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
 export class ProductsComponent implements OnInit {
   env = environment;
-  products: any[] = [];
-
+products = signal<any[]>([]);
 searchText: string = '';
 selectedCategory: number | null = null;
 
-categories: any[] = [];
+
+categories = signal<any[]>([]);
 
 limit: number = 12;
 cursor: number | null = null;
@@ -31,22 +33,32 @@ loading: boolean = false;
   constructor(
     private productService: ProductService,
     private cartService: CartService,
-    private auth:AuthService
+    private auth:AuthService,
+    private loadingService:LoadingService
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
-    this.loadCategories();
+    this.initPage();
+    
   }
+  initPage() {
+  this.products.set([]);
+  this.cursor = null;
+  this.hasMore = true;
   
-    loadProducts(reset: boolean = false) {
+  this.loadCategories();
+  this.loadProducts(true);
+}
+
+  
+loadProducts(reset: boolean = false) {
 
   if (this.loading || (!this.hasMore && !reset)) return;
 
-  this.loading = true;
+  this.loadingService.show();
 
   if (reset) {
-    this.products = [];
+    this.products.set([]);
     this.cursor = null;
     this.hasMore = true;
   }
@@ -61,29 +73,29 @@ loading: boolean = false;
     .subscribe({
       next: (res) => {
 
-  const data = res.data;
+        const data = res.data;
 
-  this.products = [
-    ...this.products,
-    ...data.products
-  ];
+        this.products.set([
+          ...this.products(),
+          ...data.products
+        ]);
 
-  this.cursor = data.nextCursor;
-  this.hasMore = data.hasMore;
+        this.cursor = data.nextCursor;
+        this.hasMore = data.hasMore;
 
-  this.loading = false;
-},
+        this.loadingService.hide();
+      },
       error: () => {
-        this.loading = false;
+        this.loadingService.hide();
       }
     });
 }
      // 🔥 Load categories from DB
   loadCategories() {
-    this.productService.getCategories().subscribe(res => {
-      this.categories = res.data;
-    });
-  }
+  this.productService.getCategories().subscribe(res => {
+    this.categories.set(res.data);
+  });
+}
 
 addToCart(product: any) {
 

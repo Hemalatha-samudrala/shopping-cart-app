@@ -25,7 +25,7 @@ h2 {
   display: flex;
   align-items: center;
   gap: 16px;
-
+  flex-wrap: wrap;
   padding: 16px 24px;
   background: white;
   border-bottom: 1px solid #eee;
@@ -43,6 +43,7 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
+  flex: 1 1 180px;
   min-width: 180px;
 }
 
@@ -134,4 +135,14 @@ button:hover {
 .card button:last-child {
   background: #dc3545;
   color: white;
+}
+
+@media (max-width: 1000px) {
+  .form-box {
+    flex-wrap: wrap;
+  }
+
+  .admin-container {
+    margin-top: 140px;
+  }
 }

@@ -14,7 +14,7 @@
   <!-- LIST -->
   <div class="category-list">
 
-  <div *ngFor="let cat of categories" class="category-item">
+  <div *ngFor="let cat of categories()" class="category-item">
 
     <!-- VIEW MODE -->
     <ng-container *ngIf="editId !== cat.Id; else editMode">

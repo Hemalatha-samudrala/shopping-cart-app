@@ -5,7 +5,7 @@
   <div class="category-tabs">
     <button (click)="selectCategory(null)">All</button>
 
-      <button *ngFor="let c of categories"
+      <button *ngFor="let c of categories()"
         (click)="selectCategory(c)">
                   {{ c.Name }}
           </button>
@@ -23,8 +23,11 @@
   </div>
 
 </div>
+<!-- LOADING -->
+  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+  
 <div class="products-container">
-  <div class="product-card" *ngFor="let product of products">
+  <div class="product-card" *ngFor="let product of products()">
     <img [src]="env.apiUrl + '/uploads/' + product.ImageUrl" 
          [alt]="product.ProductName"
          width="150" />
@@ -40,7 +43,7 @@
 </button>
 </div>
 
-<div *ngIf="products.length === 0">
+<div *ngIf="!loading && !products().length">
   No products found
 </div>
 </div>

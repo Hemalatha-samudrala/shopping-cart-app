@@ -10,7 +10,7 @@
     <input type="number" [(ngModel)]="product.stock" placeholder="Stock" />
     <select [(ngModel)]="product.CategoryId">
   <option [ngValue]="null">Select Category</option>
-  <option *ngFor="let c of categories" [ngValue]="c.Id">
+  <option *ngFor="let c of categories()" [ngValue]="c.Id">
     {{ c.Name }}
   </option>
 </select>
@@ -37,7 +37,7 @@
   <!-- PRODUCT LIST -->
   <div class="grid">
 
-    <div class="card" *ngFor="let p of products">
+    <div class="card" *ngFor="let p of products()">
 
       <img [src]="env.apiUrl + '/uploads/' + p.ImageUrl" />
 
