@@ -6,7 +6,7 @@ export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   const role = localStorage.getItem('role');
-
+  console.log('Admin Guard Role:', role);
   if (role === 'Admin') {
     return true;
   }
