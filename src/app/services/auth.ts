@@ -12,16 +12,17 @@ export class AuthService {
 
   login(id: number, email: string, role: string, token: string) {
 
-    console.log('LOGIN TOKEN RECEIVED:', token);
+  this.currentUserId.set(id);
+  this.currentUser.set(email);
+  this.currentRole.set(role);
 
-    this.currentUserId.set(id);
-    this.currentUser.set(email);
-    this.currentRole.set(role);
+  this.token.set(token);
 
-    this.token.set(token); // ✅ MUST be here
-
-    localStorage.setItem('token', token);
-  }
+  localStorage.setItem('userId', id.toString());
+  localStorage.setItem('email', email);
+  localStorage.setItem('role', role);   
+  localStorage.setItem('token', token);
+}
 
   logout() {
 
