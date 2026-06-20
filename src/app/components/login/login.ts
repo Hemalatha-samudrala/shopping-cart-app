@@ -69,6 +69,7 @@ export class LoginComponent {
         user.role,
         token
       );
+      console.log('Stored role:', localStorage.getItem('role'));
 
       // Load cart
       this.cartService.loadCart().subscribe();
