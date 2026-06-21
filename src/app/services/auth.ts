@@ -9,6 +9,9 @@ export class AuthService {
 
   // 🔥 IMPORTANT
   token = signal<string | null>(localStorage.getItem('token'));
+  constructor() {
+  this.loadUser();
+}
 
   login(id: number, email: string, role: string, token: string) {
 
