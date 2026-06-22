@@ -5,13 +5,13 @@
   <!-- FORM -->
   <div class="form-box">
 
-    <input [(ngModel)]="product.product_name" placeholder="Product Name">
+    <input [(ngModel)]="product.productName" placeholder="Product Name">
     <input [(ngModel)]="product.price" placeholder="Price">
     <input type="number" [(ngModel)]="product.stock" placeholder="Stock" />
-    <select [(ngModel)]="product.category_id">
+    <select [(ngModel)]="product.CategoryId">
   <option [ngValue]="null">Select Category</option>
-  <option *ngFor="let c of categories()" [ngValue]="c.id">
-    {{ c.name }}
+  <option *ngFor="let c of categories()" [ngValue]="c.Id">
+    {{ c.categoryName }}
   </option>
 </select>
 
@@ -39,9 +39,9 @@
 
     <div class="card" *ngFor="let p of products()">
 
-      <img [src]="p.image_url" />
+      <img [src]="env.apiUrl + '/uploads/' + p.ImageUrl" />
 
-      <h3>{{ p.product_name }}</h3>
+      <h3>{{ p.productName }}</h3>
       <p>${{ p.price }}</p>
 
       <button (click)="editProduct(p)">Edit</button>
