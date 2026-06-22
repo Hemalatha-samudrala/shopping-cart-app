@@ -145,7 +145,7 @@ loading: boolean = false;
     this.product.id = p.id;
     this.product.productName = p.productName;
     this.product.price = p.price;
-    this.product.CategoryId = p.CategoryId;
+    this.product.CategoryId = p.categoryId;
     this.product.stock = p.stock;
     this.selectedFile = null;
   }
