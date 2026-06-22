@@ -143,9 +143,9 @@ loading: boolean = false;
     this.isEditMode = true;
 
     this.product.id = p.id;
-    this.product.productName = p.product_name;
+    this.product.productName = p.productName;
     this.product.price = p.price;
-    this.product.CategoryId = p.category_id;
+    this.product.CategoryId = p.CategoryId;
     this.product.stock = p.stock;
     this.selectedFile = null;
   }
