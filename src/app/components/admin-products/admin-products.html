@@ -38,7 +38,7 @@
 
     <div class="card" *ngFor="let p of products()">
 
-      <img [src]="p.ImageUrl" />
+      <img [src]="p.imageUrl" [alt]="p.productName" />
 
       <h3>{{ p.productName }}</h3>
       <p>${{ p.price }}</p>
