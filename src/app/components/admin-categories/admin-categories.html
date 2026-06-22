@@ -17,9 +17,9 @@
   <div *ngFor="let cat of categories()" class="category-item">
 
     <!-- VIEW MODE -->
-    <ng-container *ngIf="editId !== cat.Id; else editMode">
+    <ng-container *ngIf="editId !== cat.id; else editMode">
 
-      <span>{{ cat.Name }}</span>
+      <span>{{ cat.name }}</span>
 
       <div class="category-actions">
         <button class="edit-btn" (click)="startEdit(cat)">Edit</button>
