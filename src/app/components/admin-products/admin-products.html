@@ -4,14 +4,13 @@
 
   <!-- FORM -->
   <div class="form-box">
-
     <input [(ngModel)]="product.productName" placeholder="Product Name">
     <input [(ngModel)]="product.price" placeholder="Price">
     <input type="number" [(ngModel)]="product.stock" placeholder="Stock" />
     <select [(ngModel)]="product.CategoryId">
   <option [ngValue]="null">Select Category</option>
-  <option *ngFor="let c of categories()" [ngValue]="c.Id">
-    {{ c.categoryName }}
+  <option *ngFor="let c of categories()" [ngValue]="c.id">
+    {{ c.name }}
   </option>
 </select>
 
@@ -45,7 +44,7 @@
       <p>${{ p.price }}</p>
 
       <button (click)="editProduct(p)">Edit</button>
-      <button (click)="deleteProduct(p.Id)">Delete</button>
+      <button (click)="deleteProduct(p.id)">Delete</button>
 
     </div>
     <button (click)="loadProducts()" [disabled]="!hasMore">

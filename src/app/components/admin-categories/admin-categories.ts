@@ -64,8 +64,8 @@ export class AdminCategoriesComponent implements OnInit {
 
   // START EDIT
   startEdit(cat: any) {
-    this.editId = cat.Id;
-    this.editName = cat.Name;
+    this.editId = cat.id;
+    this.editName = cat.name;
   }
 
   // SAVE EDIT

@@ -142,11 +142,11 @@ loading: boolean = false;
   editProduct(p: any) {
     this.isEditMode = true;
 
-    this.product.id = p.Id;
-    this.product.productName = p.ProductName;
-    this.product.price = p.Price;
-    this.product.CategoryId = p.CategoryId;
-    this.product.stock = p.Stock;
+    this.product.id = p.id;
+    this.product.productName = p.product_name;
+    this.product.price = p.price;
+    this.product.CategoryId = p.category_id;
+    this.product.stock = p.stock;
     this.selectedFile = null;
   }
 
