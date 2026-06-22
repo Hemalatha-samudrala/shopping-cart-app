@@ -19,7 +19,7 @@
     <!-- VIEW MODE -->
     <ng-container *ngIf="editId !== cat.id; else editMode">
 
-      <span>{{ cat.name }}</span>
+      <span>{{ cat.categoryName }}</span>
 
       <div class="category-actions">
         <button class="edit-btn" (click)="startEdit(cat)">Edit</button>
