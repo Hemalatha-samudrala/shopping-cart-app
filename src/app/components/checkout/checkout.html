@@ -14,7 +14,7 @@
     <div *ngFor="let item of cartService.cartItems()" class="checkout-item">
 
   <img
-    [src]="env.apiUrl + '/uploads/' + item.imageUrl"
+    [src]="item.imageUrl"
     class="checkout-image"
     alt="{{ item.productName }}"
   />

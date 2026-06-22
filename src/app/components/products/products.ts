@@ -110,7 +110,7 @@ addToCart(product: any) {
     return;
   }
 
-  this.cartService.addToCart(product.Id)
+  this.cartService.addToCart(product.id)
     .subscribe({
       next: (res) => {
         Swal.fire({
@@ -134,7 +134,7 @@ addToCart(product: any) {
 
    // TAB CLICK
   selectCategory(cat: any) {
-  this.selectedCategory = cat ? cat.Id : null;
+  this.selectedCategory = cat ? cat.id : null;
   this.cursor = null;
   this.hasMore = true;
   this.loadProducts(true);
