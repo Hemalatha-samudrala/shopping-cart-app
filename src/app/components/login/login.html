@@ -15,7 +15,15 @@
     [(ngModel)]="password"
     placeholder="Enter Password"
   />
+  <div
+    class="forgot-password"
+    *ngIf="!isRegisterMode">
 
+    <a routerLink="/forgot-password">
+      Forgot Password?
+    </a>
+
+  </div>
   <!-- Main Button -->
   <button (click)="isRegisterMode ? register() : login()">
     {{ isRegisterMode ? 'Register' : 'Login' }}

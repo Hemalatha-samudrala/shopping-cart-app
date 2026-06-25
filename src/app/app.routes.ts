@@ -6,6 +6,18 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./components/login/login').then(m => m.LoginComponent)
+  },{
+    path: 'verify-email',
+    loadComponent: () =>
+      import('./pages/verify-email/verify-email').then(m => m.VerifyEmailComponent)
+  },{
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./pages/forgot-password/forgot-password').then(m => m.ForgotPasswordComponent)
+  },{
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./pages/reset-password/reset-password').then(m => m.ResetPasswordComponent)
   },
   {
     path: 'products',

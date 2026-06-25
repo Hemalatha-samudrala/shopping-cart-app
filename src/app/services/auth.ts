@@ -1,4 +1,6 @@
 import { Injectable, signal } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -9,7 +11,8 @@ export class AuthService {
 
   // 🔥 IMPORTANT
   token = signal<string | null>(localStorage.getItem('token'));
-  constructor() {
+  
+constructor(private http: HttpClient) {
   this.loadUser();
 }
 
@@ -87,4 +90,30 @@ export class AuthService {
   isUser(): boolean {
     return this.currentRole()?.toLowerCase() === 'user';
   }
+
+  verifyEmail(token: string) {
+  return this.http.get(
+    `${environment.apiUrl}/auth/verify-email?token=${token}`
+  );
+}
+
+forgotPassword(email: string) {
+  return this.http.post(
+    `${environment.apiUrl}/auth/forgot-password`,
+    { email }
+  );
+}
+
+resetPassword(
+  token: string,
+  password: string
+) {
+  return this.http.post(
+    `${environment.apiUrl}/auth/reset-password`,
+    {
+      token,
+      password
+    }
+  );
+}
 }
