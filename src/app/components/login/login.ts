@@ -57,7 +57,7 @@ export class LoginComponent {
       // ✅ FIX: correct path
       const user = res.data.user;
       const token = res.data.token;
-
+       console.log(res);
       // Save session
       this.auth.login(
         user.id,
