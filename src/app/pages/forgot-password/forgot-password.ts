@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth';
   selector: 'app-forgot-password',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './forgot-password.component.html'
+  templateUrl: './forgot-password.html'
 })
 export class ForgotPasswordComponent {
 
