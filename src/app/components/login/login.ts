@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,Router],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -54,13 +54,9 @@ export class LoginComponent {
   }).subscribe({
     next: (res) => {
 
-      console.log('Login success:', res);
-
       // ✅ FIX: correct path
       const user = res.data.user;
       const token = res.data.token;
-
-      console.log('Role:', user.role);
 
       // Save session
       this.auth.login(
@@ -69,7 +65,6 @@ export class LoginComponent {
         user.role,
         token
       );
-      console.log('Stored role:', localStorage.getItem('role'));
 
       // Load cart
       this.cartService.loadCart().subscribe();
