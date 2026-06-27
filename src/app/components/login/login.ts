@@ -55,8 +55,8 @@ export class LoginComponent {
     next: (res) => {
 
       // ✅ FIX: correct path
-      const user = res.data.user;
-      const token = res.data.token;
+      const user = res.message.user;
+      const token = res.message.token;
        console.log(res);
       // Save session
       this.auth.login(
