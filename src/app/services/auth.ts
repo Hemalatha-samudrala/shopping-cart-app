@@ -93,13 +93,13 @@ constructor(private http: HttpClient) {
 
   verifyEmail(token: string) {
   return this.http.get(
-    `${environment.apiUrl}/auth/verify-email?token=${token}`
+    `${environment.apiUrl}/api/auth/verify-email?token=${token}`
   );
 }
 
 forgotPassword(email: string) {
   return this.http.post(
-    `${environment.apiUrl}/auth/forgot-password`,
+    `${environment.apiUrl}/api/auth/forgot-password`,
     { email }
   );
 }
@@ -109,7 +109,7 @@ resetPassword(
   password: string
 ) {
   return this.http.post(
-    `${environment.apiUrl}/auth/reset-password`,
+    `${environment.apiUrl}/api/auth/reset-password`,
     {
       token,
       password
