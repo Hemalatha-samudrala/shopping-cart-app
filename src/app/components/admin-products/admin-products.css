@@ -93,6 +93,7 @@ button:hover {
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   text-align: center;
   transition: transform 0.2s;
+  gap: 10px;
 }
 
 .card:hover {
@@ -106,6 +107,7 @@ button:hover {
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
+  background: #f1f1f1;
 }
 
 /* TEXT */
