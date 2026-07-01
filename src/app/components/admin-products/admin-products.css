@@ -87,51 +87,58 @@ button:hover {
 
 /* PRODUCT CARD */
 .card {
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.2s;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
 .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
 }
 
 /* IMAGE */
 .card img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: 12px;
   background: #f1f1f1;
 }
 
 /* TEXT */
 .card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
   margin: 5px 0;
-  color: #333;
 }
 
 .card p {
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
 }
 
 /* CARD BUTTONS */
 .card button {
-  margin: 5px;
-  padding: 6px 10px;
-  font-size: 13px;
-}
-
-.card button {
-  background: #007bff;
+  margin-top: auto;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: ##007bff;
   color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .card button:last-child {
