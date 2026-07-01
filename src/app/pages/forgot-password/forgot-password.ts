@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
   selector: 'app-forgot-password',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './forgot-password.html'
+  templateUrl: './forgot-password.html',
+  styleUrl: './forgot-password.css',
 })
 export class ForgotPasswordComponent {
 
