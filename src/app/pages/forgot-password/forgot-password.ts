@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-forgot-password',
@@ -33,7 +34,7 @@ export class ForgotPasswordComponent {
           showConfirmButton: false
         });
         },
-        error: () => {
+        error: (err) => {
           this.message =
             'Unable to send reset link';
              Swal.fire({
