@@ -25,10 +25,22 @@ export class ForgotPasswordComponent {
         next: () => {
           this.message =
             'Password reset link sent';
+             Swal.fire({
+          icon: 'success',
+          title: 'reset link!',
+          text: 'sent link successfully',
+          timer: 1500,
+          showConfirmButton: false
+        });
         },
         error: () => {
           this.message =
             'Unable to send reset link';
+             Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'failed to send link'
+        });
         }
       });
   }

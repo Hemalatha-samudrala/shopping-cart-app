@@ -117,13 +117,5 @@ export class LoginComponent {
   }
   forgot() {
         this.router.navigate(['/forgot-password']);
-        Swal.fire({
-          icon: 'success',
-          title: 'reset link!',
-          text: 'sent link successfully',
-          timer: 1500,
-          showConfirmButton: false
-        });
-  
   }
 }
