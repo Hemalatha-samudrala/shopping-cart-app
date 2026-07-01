@@ -116,10 +116,6 @@ export class LoginComponent {
     });
   }
   forgot() {
-
-    this.http.post<any>(`${environment.apiUrl}/api/auth/forgot-password`,{
-    email: this.email}).subscribe({
-      next: () => {
         this.router.navigate(['/forgot-password']);
         Swal.fire({
           icon: 'success',
@@ -128,14 +124,6 @@ export class LoginComponent {
           timer: 1500,
           showConfirmButton: false
         });
-      },
-      error: (err) => {
-         Swal.fire({
-          icon: 'error',
-          title: 'Failed',
-          text: err.error?.message || ' failed'
-        });
-      }
-    });
+  
   }
 }
