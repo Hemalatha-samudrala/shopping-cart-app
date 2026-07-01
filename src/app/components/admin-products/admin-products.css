@@ -129,16 +129,14 @@ button:hover {
 
 /* CARD BUTTONS */
 .card button {
-  margin-top: auto;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background: ##007bff;
+  margin: 5px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.card button {
+  background: #007bff;
   color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
 }
 
 .card button:last-child {
