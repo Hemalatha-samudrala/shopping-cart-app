@@ -128,18 +128,27 @@ button:hover {
 }
 
 /* CARD BUTTONS */
-.card button {
-  margin: 5px;
-  padding: 6px 10px;
-  font-size: 13px;
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.card button {
+.button-group button {
+  flex: 1;              /* Optional: makes both buttons equal width */
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button-group button:first-child {
   background: #007bff;
   color: white;
 }
 
-.card button:last-child {
+.button-group button:last-child {
   background: #dc3545;
   color: white;
 }

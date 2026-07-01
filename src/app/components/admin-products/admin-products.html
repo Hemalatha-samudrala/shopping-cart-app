@@ -42,10 +42,10 @@
 
       <h3>{{ p.productName }}</h3>
       <p>${{ p.price }}</p>
-
+      <div class="button-group">
       <button (click)="editProduct(p)">Edit</button>
       <button (click)="deleteProduct(p.id)">Delete</button>
-
+      </div>
     </div>
     <button (click)="loadProducts()" [disabled]="!hasMore">
   Load More
