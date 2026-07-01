@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
 import { AuthService } from '../../services/auth';
 import { CartService } from '../../services/cart';
 import { environment } from '../../../environments/environment';
@@ -53,7 +52,6 @@ export class LoginComponent {
     password: this.password
   }).subscribe({
     next: (res) => {
-
       // ✅ FIX: correct path
       const user = res.message.user;
       const token = res.message.token;
@@ -65,10 +63,8 @@ export class LoginComponent {
         user.role,
         token
       );
-
       // Load cart
       this.cartService.loadCart().subscribe();
-
       // Navigate by role
       if (user.role === 'Admin') {
         this.router.navigate(['/admin-products']);
@@ -78,7 +74,6 @@ export class LoginComponent {
     },
 
     error: (err) => {
-
       Swal.fire({
         icon: 'error',
         title: 'Failed',
@@ -116,6 +111,36 @@ export class LoginComponent {
           icon: 'error',
           title: 'Failed',
           text: err.error?.message || 'Registration failed'
+        });
+      }
+    });
+  }
+  forgot() {
+    if (!this.email) {
+       Swal.fire({
+      icon: 'warning',
+      title: 'Enter details',
+      text: 'Please enter email'
+    });
+      return;
+    }
+    this.http.post<any>(`${environment.apiUrl}/api/auth/forgot-password`,{
+    email: this.email}).subscribe({
+      next: () => {
+        this.router.navigate(['/forgot-password']);
+        Swal.fire({
+          icon: 'success',
+          title: 'reset link!',
+          text: 'sent link successfully',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      },
+      error: (err) => {
+         Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || ' failed'
         });
       }
     });

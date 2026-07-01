@@ -33,7 +33,7 @@
     class="forgot-password"
     *ngIf="!isRegisterMode">
 
-    <a routerLink="/forgot-password">
+    <a (click)="forgot()">
       Forgot Password?
     </a>
 
