@@ -116,14 +116,7 @@ export class LoginComponent {
     });
   }
   forgot() {
-    if (!this.email) {
-       Swal.fire({
-      icon: 'warning',
-      title: 'Enter details',
-      text: 'Please enter email'
-    });
-      return;
-    }
+
     this.http.post<any>(`${environment.apiUrl}/api/auth/forgot-password`,{
     email: this.email}).subscribe({
       next: () => {
