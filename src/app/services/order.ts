@@ -97,6 +97,21 @@ export class OrderService {
     { status }
   );
 }
+// =====================
+  // PRINT RECEIPT
+  // =====================
+
+printReceipt(orderId: number): void {
+  this.http.get(
+    `${this.apiUrl}/${orderId}/receipt`,
+    {
+      responseType: 'blob'
+    }
+  ).subscribe(blob => {
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
+  });
+}
 
   // =====================
   // DELETE ORDER

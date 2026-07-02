@@ -92,7 +92,10 @@
         <div class="price">
           ${{ item.price }}
         </div>
-
+        <button
+          (click)="printReceipt(order.id)">
+          Print Receipt
+        </button>
       </div>
 
     </div>

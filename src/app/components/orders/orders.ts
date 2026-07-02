@@ -179,6 +179,10 @@ export class OrdersComponent implements OnInit {
         : orderId;
   }
 
+   printReceipt(orderId: number): void {
+    this.orderService.printReceipt(orderId);
+  }
+
 onStatusChange(event: Event, order: any) {
 
   const select = event.target as HTMLSelectElement;
