@@ -97,8 +97,6 @@ export class OrdersComponent implements OnInit {
       .subscribe({
 
         next: () => {
-
-          console.log('Status updated');
           Swal.fire({
           icon: 'success',
           title: 'Status updated!',
@@ -179,9 +177,30 @@ export class OrdersComponent implements OnInit {
         : orderId;
   }
 
-   printReceipt(orderId: number): void {
-    this.orderService.printReceipt(orderId);
-  }
+  printReceipt(orderId: number): void {
+
+  this.orderService.printReceipt(orderId).subscribe({
+
+    next: (blob: Blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      window.open(url);
+
+    },
+
+    error: (err) => {
+
+       Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not print'
+        });
+    }
+
+  });
+
+}
 
 onStatusChange(event: Event, order: any) {
 

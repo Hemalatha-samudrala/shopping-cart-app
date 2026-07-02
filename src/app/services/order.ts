@@ -100,17 +100,13 @@ export class OrderService {
 // =====================
   // PRINT RECEIPT
   // =====================
-
-printReceipt(orderId: number): void {
-  this.http.get(
+printReceipt(orderId: number) {
+  return this.http.get(
     `${this.apiUrl}/${orderId}/receipt`,
     {
       responseType: 'blob'
     }
-  ).subscribe(blob => {
-    const url = window.URL.createObjectURL(blob);
-    window.open(url);
-  });
+  );
 }
 
   // =====================
