@@ -106,5 +106,7 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
+  gap:10px;
+  align:right;
 }
 
