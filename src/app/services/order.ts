@@ -109,6 +109,18 @@ printReceipt(orderId: number) {
   );
 }
 
+// =====================
+  // PRINT INVOICE
+  // =====================
+printInvoice(orderId: number) {
+  return this.http.get(
+    `${this.apiUrl}/${orderId}/invoice`,
+    {
+      responseType: 'blob'
+    }
+  );
+}
+
   // =====================
   // DELETE ORDER
   // =====================

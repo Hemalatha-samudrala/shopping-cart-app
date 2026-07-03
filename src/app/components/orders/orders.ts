@@ -202,6 +202,31 @@ export class OrdersComponent implements OnInit {
 
 }
 
+ printInvoice(orderId: number): void {
+
+  this.orderService.printInvoice(orderId).subscribe({
+
+    next: (blob: Blob) => {
+
+      const url = window.URL.createObjectURL(blob);
+
+      window.open(url);
+
+    },
+
+    error: (err) => {
+
+       Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: err.error?.message || 'Could not print'
+        });
+    }
+
+  });
+
+}
+
 onStatusChange(event: Event, order: any) {
 
   const select = event.target as HTMLSelectElement;
