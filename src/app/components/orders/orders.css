@@ -66,6 +66,8 @@
 .order-items {
   padding: 10px 15px;
   background: #fafafa;
+  display: flex; 
+  gap: 15px;
 }
 
 .item-row {
